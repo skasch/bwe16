@@ -1,4 +1,10 @@
-import chai from 'chai';
-import chaiImmutable from 'chai-immutable';
+import chai from 'chai'
+import chaiImmutable from 'chai-immutable'
+import chaiAsPromised from 'chai-as-promised'
 
-chai.use(chaiImmutable);
+chaiAsPromised.transformAsserterArgs = function(args) {
+    return Promise.all(args)
+}
+
+chai.use(chaiImmutable)
+chai.use(chaiAsPromised)

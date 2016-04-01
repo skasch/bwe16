@@ -1,0 +1,10 @@
+{
+	"db": {
+		"port": 28015
+		,"host": "localhost"
+		,"db": "bwe2016"
+		,"tables": [
+			"event"
+		]
+	}
+}
