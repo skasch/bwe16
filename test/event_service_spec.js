@@ -13,6 +13,11 @@ import {
 
 describe('eventService', () => {
 	before(setup)
+
+	after(() => {
+		get()
+			.then((events) => events.keySeq().take(2).forEach(id => remove(id)))
+	})
 	
 	it('gets data from the database', () => {
 		expect(get).to.not.throw(Error)
@@ -40,14 +45,11 @@ describe('eventService', () => {
 				.update('startTime', time => Moment(new Date(time)))
 				.update('endTime', time => Moment(new Date(time)))
 			)
-		const lastEvent = get()
-			.then(table => table
-				.get(table.keySeq().first())
-				.delete('serverdate')
-			)
-		Promise.all([lastEvent, resEvent])
-			.then(() => id
-				.then(id => remove(id)))
+		const lastEvent = id
+			.then(id => get()
+				.then(table => table
+					.get(id)
+					.delete('serverdate')))
 
 		return Promise.all([
 			expect(resEvent).to.eventually.equal(event)
@@ -64,14 +66,8 @@ describe('eventService', () => {
 			,description: 'Yoga class for morning stretching'
 			,location: 'Yogaholics Camp'
 		})
-		const id = post(event)
+		const res = post(event)
 			.then(table => table.keySeq().first())
-		const eventUpdate = fromJS({
-			name: 'Yoga beginner class'
-			,startTime: Moment('2016-05-14 8:30')
-			,description: 'Yoga class for every one!'
-		})
-		const res = id
 			.then(id => update(id, eventUpdate))
 			.then(table => {
 				return table
@@ -80,9 +76,11 @@ describe('eventService', () => {
 				.update('startTime', time => Moment(new Date(time)))
 				.update('endTime', time => Moment(new Date(time)))
 			})
-		res
-			.then(() => id
-				.then(id => remove(id)))
+		const eventUpdate = fromJS({
+			name: 'Yoga beginner class'
+			,startTime: Moment('2016-05-14 8:30')
+			,description: 'Yoga class for every one!'
+		})
 
 		return expect(res).to.eventually.equal(fromJS({
 			name: 'Yoga beginner class'

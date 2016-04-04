@@ -38,8 +38,9 @@ export function post(event) {
 		.set('serverdate', new Date())
 		.merge(ENTRIES
 			.reduce(
-				(event, entry) => event.set(entry, xss(event.get(entry)))
-				,event
+				(event, entry) => {
+					return event.set(entry, xss(event.get(entry)))
+				},fromJS(event)
 			))
 	return connect()
 		.then(conn => r
@@ -47,31 +48,34 @@ export function post(event) {
 			.table('event')
 			.insert(serverEvent.toJSON())
 			.run(conn))
-		.then(res => Map().set(res.generated_keys[0], serverEvent))
+		.then(res => {
+			return Map().set(res.generated_keys[0], serverEvent)
+		})
 }
 
 export function update(id, event) {
 	const serverEvent = Map()
 		.set('serverdate', new Date())
 		.merge(ENTRIES
-			.filter(entry => entry in event.keySeq())
+			.filter(entry => entry in fromJS(event).keySeq())
 			.reduce((event, entry) => event.set(entry, xss(event.get(entry))), 
-				event))
-	connect()
-		.then(conn => r
-			.db(config.get('db').get('db'))
-			.table('event')
-			.get(id)
-			.update(serverEvent.toJSON())
-			.run(conn))
+				fromJS(event)))
 	return connect()
 		.then(conn => r
 			.db(config.get('db').get('db'))
 			.table('event')
 			.get(id)
-			.run(conn))
-		.then(fromJS)
-		.then(res => Map().set(res.get('id'), res.remove('id')))
+			.update(serverEvent.toJSON())
+			.run(conn)
+			.then(() => r
+				.db(config.get('db').get('db'))
+				.table('event')
+				.get(id)
+				.run(conn))
+			.then(fromJS)
+			.then(res => {
+				return Map().set(res.get('id'), res.remove('id'))
+			}))
 }
 
 export function remove(id) {

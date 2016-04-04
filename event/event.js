@@ -1,11 +1,14 @@
+import Request from 'superagent'
+
 import * as actionCreators from './event_action_creators'
+import { serverUrl } from '../server/app'
 
 const eventUrl = '/api/event'
 
 export function getEvent() {
 	return dispatch => {
 		dispatch(actionCreators.getEventRequest())
-		return request
+		return Request
 			.get(eventUrl)
 			.set('Accept', 'application/json')
 			.end((err, res) => {
@@ -21,7 +24,7 @@ export function getEvent() {
 export function postEvent(event) {
 	return dispatch => {
 		dispatch(actionCreators.postEventRequest(event))
-		return request
+		return Request
 			.post(eventUrl)
 			.send(event)
 			.set('Accept', 'application/json')
@@ -38,7 +41,7 @@ export function postEvent(event) {
 export function updateEvent(event, id) {
 	return dispatch => {
 		dispatch(actionCreators.updateEventRequest(event, id))
-		return request
+		return Request
 			.post(eventUrl + '/' + id)
 			.send(event)
 			.set('Accept', 'application/json')
@@ -55,7 +58,7 @@ export function updateEvent(event, id) {
 export function removeEvent(id) {
 	return dispatch => {
 		dispatch(actionCreators.removeEventRequest(id))
-		return request
+		return Request
 			.del(eventUrl + '/' + id)
 			.set('Accept', 'application/json')
 			.end((err, res) => {
