@@ -1,18 +1,19 @@
-import { createEvent, removeEvent, editEvent, INITIAL_STATE } from './event'
-import { CREATE_EVENT, EDIT_EVENT, REMOVE_EVENT } from '../flux/action_types'
+import { Map, fromJS } from 'immutable'
+import * as types from './event_action_types'
+
+export const INITIAL_STATE = Map()
 
 export default function eventReducer(state = INITIAL_STATE, action) {
 	switch (action.type) {
-		case CREATE_EVENT:
-			return createEvent(state 
-				,action.payload.eventId 
-				,action.payload.eventContent)
-		case EDIT_EVENT:
-			return editEvent(state
-				,action.payload.eventId
-				,action.payload.eventContent)
-		case REMOVE_EVENT:
-			return removeEvent(state, action.payload.eventId)
+	case types.GET_SUCCESS:
+		return state.merge(action.payload)
+	case types.POST_SUCCESS:
+		return state.merge(action.payload)
+	case types.UPDATE_SUCCESS:
+		return state.merge(action.payload)
+	case types.REMOVE_SUCCESS:
+		return state.remove(action.payload)
+	default:
+		return state
 	}
-	return state
 }
