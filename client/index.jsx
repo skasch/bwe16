@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import { hashHistory } from 'react-router'
-import { makeStore } from '../flux/store'
-import Root from '../app/App'
-import routes from '../app/routes'
+import makeStore from '../flux/store'
+import Root from '../App/Root'
+import routes from '../App/routes'
 
 const store = makeStore()
 
