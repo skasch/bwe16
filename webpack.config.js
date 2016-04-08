@@ -7,14 +7,20 @@ module.exports = {
 		,'./client/index.jsx'
 	]
 	,module: {
-		loaders: [{
-			test: /\.jsx?$/
-			,exclude: /node_modules/
-			,loader: 'babel'
-			,query: {
-				presets: ['es2015']
+		loaders: [
+			{
+				test: /\.jsx?$/
+				,exclude: /node_modules/
+				,loader: 'babel'
+				,query: {
+					presets: ['es2015']
+				}
 			}
-		}]
+			,{ 
+				test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$/
+				,loader: "url-loader?limit=100000" 
+			}
+		]
 	}
 	,resolve: {
 		extensions: ['', '.js', '.jsx']

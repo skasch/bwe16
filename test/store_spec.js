@@ -28,6 +28,7 @@ describe('store', () => {
 			}
 		})
 
-		expect(store.getState().get('event').get('foo')).to.equal('bar')
+		expect(store.getState().get('event').get('data').get('foo'))
+			.to.equal('bar')
 	})
 })

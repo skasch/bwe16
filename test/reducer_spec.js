@@ -23,7 +23,7 @@ describe('reducer', () => {
 		}
 		const nextState = reducer(state, action)
 
-		expect(nextState.get('event')).to.equal(fromJS({
+		expect(nextState.get('event').get('data')).to.equal(fromJS({
 			'1234': {
 				name: 'Yoga class'
 				,startTime: Moment('2016-05-14 9:00')
