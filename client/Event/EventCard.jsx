@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Moment from 'moment'
 import Card from 'material-ui/lib/card/card'
 import CardActions from 'material-ui/lib/card/card-actions'
@@ -9,6 +10,12 @@ import Avatar from 'material-ui/lib/avatar'
 import * as Colors from 'material-ui/lib/styles/colors'
 
 export default class EventCard extends Component {
+  constructor(props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin
+      .shouldComponentUpdate.bind(this)
+  }
+  
   momentConvert(time) {
     return Moment(new Date(time))
   }

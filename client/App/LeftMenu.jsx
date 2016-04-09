@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import Card from 'material-ui/lib/card/card'
 import CardMedia from 'material-ui/lib/card/card-media'
@@ -8,6 +9,12 @@ import EventIcon from 'material-ui/lib/svg-icons/action/event'
 import Avatar from 'material-ui/lib/avatar'
 
 export default class LeftMenu extends Component {
+  constructor(props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin
+    	.shouldComponentUpdate.bind(this)
+  }
+
 	render() {
 		return (
 			<div className='left-menu-container'>

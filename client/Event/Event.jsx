@@ -13,7 +13,7 @@ import * as Colors from 'material-ui/lib/styles/colors'
 
 import CreateEvent from './CreateEvent'
 import EventCard from './EventCard'
-import * as eventActionCreators from '../../event/event_action_creators'
+import * as eventActions from '../../event/event'
 
 export class Event extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export class Event extends Component {
 	render() {
 		return (
 			<div>
-				<CreateEvent />
+				<CreateEvent postEvent={this.props.postEvent}/>
 	    	<Paper zDepth={1} className='event-filtering'>
 	    		<div className="container">
 			      <div className='col-sm-6 col-xs-12'>
@@ -63,5 +63,5 @@ function mapStoreToProps(state) {
 
 export default connect(
 	mapStoreToProps
-	,eventActionCreators
+	,eventActions
 )(Event)

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
+import Moment from 'moment'
 import { Map, fromJS } from 'immutable'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
@@ -29,16 +31,25 @@ const maxDate = new Date('2016-05-15')
 export default class CreateEvent extends Component {
   constructor(props) {
     super(props)
+    this.shouldComponentUpdate = PureRenderMixin
+    	.shouldComponentUpdate.bind(this)
     this.state = {
       open: false
+			,owner: 'Burning Fanny'
 			,name: null
 			,startDay: null
 			,startTime: null
 			,endDay: null
 			,endTime: null
-			,owner: 'Burning Fanny'
 			,description: null
 			,location: null
+			,nameError: null
+			,startDayError: null
+			,startTimeError: null
+			,endDayError: null
+			,endTimeError: null
+			,descriptionError: null
+			,locationError: null
     }
   }
 	
@@ -47,17 +58,105 @@ export default class CreateEvent extends Component {
   }
 
   handleOk() {
-    this.setState({open: false})
+  	const fields = fromJS({
+  		name: 'name' 
+  		,startDay: 'starting day'
+  		,startTime: 'starting time'
+  		,endDay: 'ending day'
+  		,endTime: 'ending time'
+  		,description: 'description'
+  		,location: 'location'
+  	})
+  	const valid = fields.keySeq().reduce((valid, field) => {
+	  	if (!this.state[field] || this.state[field] === '') {
+	  		this.setState({
+	  			[field + 'Error']: 'The event ' + fields.get(field) + 
+	  				' cannot be empty'
+	  		})
+	  		return false
+	  	}
+	  	return valid
+  	}, true)
+  	if (valid) {
+  		const event = fromJS({
+  			name: this.state.name
+  			,startTime: Moment(
+  				Moment(this.state.startDay).format('YYYY-MM-DD ') +
+  				Moment(this.state.startTime).format('HH:mm:ss')
+  				,'YYYY-MM-DD HH:mm:ss'
+  			)
+  			,endTime: Moment(
+  				Moment(this.state.endDay).format('YYYY-MM-DD ') +
+  				Moment(this.state.endTime).format('HH:mm:ss')
+  				,'YYYY-MM-DD HH:mm:ss'
+  			)
+  			,owner: this.state.owner
+  			,description: this.state.description
+  			,location: this.state.location
+  		})
+  		if (event.get('endTime') > event.get('startTime')) {
+	  		this.props.postEvent(event)
+	  		this.setState({open: false})
+  		} else {
+  			this.setState({
+  				endDayError: 'The ending day should be after the starting day'
+  				,endTimeError: 'The ending time should be after the starting time'
+  			})
+  		}
+  	}
   }
 
   handleCancel() {
     this.setState({open: false})
   }
 
-  handleChange(field) {
-  	return (event) => {
-	    this.setState({[field]: event.target.value})
-	  }
+  handleNameChange(event) {
+    this.setState({
+    	nameError: null
+    	,name: event.target.value
+    })
+  }
+
+  handleLocationChange(text) {
+    this.setState({
+    	locationError: null
+    	,location: text
+    })
+  }
+
+  handleStartDayChange(event, time) {
+    this.setState({
+    	startDayError: null
+    	,startDay: time
+    })
+  }
+
+  handleStartTimeChange(event, time) {
+    this.setState({
+    	startTimeError: null
+    	,startTime: time
+    })
+  }
+
+  handleEndDayChange(event, time) {
+    this.setState({
+    	endDayError: null
+    	,endDay: time
+    })
+  }
+
+  handleEndTimeChange(event, time) {
+    this.setState({
+    	endTimeError: null
+    	,endTime: time
+    })
+  }
+
+  handleDescriptionChange(event) {
+    this.setState({
+    	descriptionError: null
+    	,description: event.target.value
+    })
   }
 
   render() {
@@ -93,13 +192,16 @@ export default class CreateEvent extends Component {
         >
         	<TextField
         		hintText='Event title'
+        		errorText={this.state.nameError}
         		fullWidth={true}
-        		onChange={::this.handleChange('name')}
+        		onChange={::this.handleNameChange}
         		value={this.state.name}
         	/>
       		<AutoComplete 
       			hintText="Location"
+        		errorText={this.state.locationError}
 		        dataSource={[]}
+        		onUpdateInput={::this.handleLocationChange}
         		value={this.state.location}
       		/>
           <div className='container-fluid'>
@@ -109,8 +211,10 @@ export default class CreateEvent extends Component {
 			          maxDate={maxDate}
 			          defaultDate={minDate}
 			          disableYearSelection={true}
-          			hintText="Start day" 
+          			hintText="Start day"
+        				errorText={this.state.startDayError} 
           			fullWidth={true} 
+        				onChange={::this.handleStartDayChange}
         				value={this.state.startDay}
           		/>
           	</div>
@@ -118,7 +222,9 @@ export default class CreateEvent extends Component {
           		<TimePicker 
           			format='24hr'
           			hintText="Start time"
+        				errorText={this.state.startTimeError}
           			fullWidth={true}
+        				onChange={::this.handleStartTimeChange}
         				value={this.state.startTime}
           		/>
           	</div>
@@ -129,7 +235,9 @@ export default class CreateEvent extends Component {
 			          defaultDate={maxDate}
 			          disableYearSelection={true}
 			          hintText="End day"
+        				errorText={this.state.endDayError}
 			          fullWidth={true}
+        				onChange={::this.handleEndDayChange}
         				value={this.state.endDay}
 			        />
           	</div>
@@ -137,15 +245,19 @@ export default class CreateEvent extends Component {
           		<TimePicker 
           			format='24hr'
           			hintText="End time"
+        				errorText={this.state.endTimeError}
           			fullWidth={true}
+        				onChange={::this.handleEndTimeChange}
         				value={this.state.endTime}
           		/>
           	</div>
           </div>
         	<TextField
         		hintText='Description'
+        		errorText={this.state.descriptionError}
         		fullWidth={true}
         		multiLine={true}
+        				onChange={::this.handleDescriptionChange}
     				value={this.state.description}
         	/>
         </Dialog>

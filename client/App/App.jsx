@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import getMuiTheme from 'material-ui/lib/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider'
 import * as Colors from 'material-ui/lib/styles/colors'
@@ -18,6 +19,12 @@ const bweTheme = getMuiTheme({
 })
 
 export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin
+    	.shouldComponentUpdate.bind(this)
+  }
+
 	render() {
 		return (
       <MuiThemeProvider muiTheme={bweTheme}>
