@@ -25,7 +25,7 @@ export class Event extends Component {
 	render() {
 		return (
 			<div>
-				<CreateEvent postEvent={this.props.postEvent}/>
+				<CreateEvent postEvent={this.props.postEvent} create={true}/>
 	    	<Paper zDepth={1} className='event-filtering'>
 	    		<div className="container">
 			      <div className='col-sm-6 col-xs-12'>
@@ -44,9 +44,12 @@ export class Event extends Component {
 	    	<Divider />
 				<div className="container">
 					{this.props.eventList.keySeq().map(key => {
-						console.log(key)
-						console.log(this.props.eventList.toJSON())
-						return <EventCard key={key} event={this.props.eventList.get(key)} />
+						return <EventCard 
+							key={key}
+							eventId={key}
+							event={this.props.eventList.get(key)}
+							updateEvent={this.props.updateEvent} 
+						/>
 					})}
 				</div>
 			</div>

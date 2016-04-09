@@ -9,19 +9,25 @@ import CardText from 'material-ui/lib/card/card-text'
 import Avatar from 'material-ui/lib/avatar'
 import * as Colors from 'material-ui/lib/styles/colors'
 
+import CreateEvent from './CreateEvent'
+
 export default class EventCard extends Component {
   constructor(props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin
       .shouldComponentUpdate.bind(this)
   }
-  
+
   momentConvert(time) {
     return Moment(new Date(time))
   }
 
   getTime(key) {
     return this.momentConvert(this.props.event.get(key))
+  }
+
+  getEventDate(key) {
+    return new Date(this.props.event.get(key))
   }
 
   getTimeText() {
@@ -64,7 +70,17 @@ export default class EventCard extends Component {
               <RaisedButton label="Save" fullWidth={true}/>
             </div>
             <div className='col-xs-6 col-sm-3 col-sm-offset-6'>
-              <RaisedButton label="Edit" fullWidth={true}/>
+              <CreateEvent 
+                eventId={this.props.eventId} 
+                create={false}
+                updateEvent={this.props.updateEvent}
+                owner={this.props.event.get('owner')}
+                name={this.props.event.get('name')}
+                startTime={::this.getEventDate('startTime')}
+                endTime={::this.getEventDate('endTime')}
+                description={this.props.event.get('description')}
+                location={this.props.event.get('location')}
+              />
             </div>
           </div>
         </CardActions>

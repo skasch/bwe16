@@ -4,6 +4,7 @@ import Moment from 'moment'
 import { Map, fromJS } from 'immutable'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
+import RaisedButton from 'material-ui/lib/raised-button'
 import FloatingActionButton from 'material-ui/lib/floating-action-button'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
 import TextField from 'material-ui/lib/text-field'
@@ -36,13 +37,13 @@ export default class CreateEvent extends Component {
     this.state = {
       open: false
 			,owner: 'Burning Fanny'
-			,name: null
-			,startDay: null
-			,startTime: null
-			,endDay: null
-			,endTime: null
-			,description: null
-			,location: null
+			,name: this.props.name
+			,startDay: this.props.startTime
+			,startTime: this.props.startTime
+			,endDay: this.props.endTime
+			,endTime: this.props.endTime
+			,description: this.props.description
+			,location: this.props.location
 			,nameError: null
 			,startDayError: null
 			,startTimeError: null
@@ -95,7 +96,9 @@ export default class CreateEvent extends Component {
   			,location: this.state.location
   		})
   		if (event.get('endTime') > event.get('startTime')) {
-	  		this.props.postEvent(event)
+  			(this.props.create) ?
+	  			this.props.postEvent(event) :
+	  			this.props.updateEvent(event, this.props.eventId)
 	  		this.setState({open: false})
   		} else {
   			this.setState({
@@ -175,15 +178,25 @@ export default class CreateEvent extends Component {
 
     return (
       <div>
-				<FloatingActionButton 
-					style={style} 
-					backgroundColor={Colors.deepOrange700}
-					onTouchTap={::this.handleOpen}
-				>
-	      	<ContentAdd />
-	    	</FloatingActionButton>
+				{(this.props.create) ? (
+					<FloatingActionButton 
+						style={style} 
+						backgroundColor={Colors.deepOrange700}
+						onTouchTap={::this.handleOpen}
+					>
+		      	<ContentAdd />
+		    	</FloatingActionButton>
+		    ) : (
+		    	<RaisedButton 
+		    		label="Edit" 
+		    		fullWidth={true}
+						onTouchTap={::this.handleOpen}
+		    	/>
+		    )}
         <Dialog
-          title="Create a new awesome event!"
+          title={((this.props.create) ?
+          	"Create a new" :
+          	"Edit your") + " awesome event!"}
           actions={actions}
           modal={false}
           open={this.state.open}
@@ -202,7 +215,7 @@ export default class CreateEvent extends Component {
         		errorText={this.state.locationError}
 		        dataSource={[]}
         		onUpdateInput={::this.handleLocationChange}
-        		value={this.state.location}
+        		searchText={this.state.location}
       		/>
           <div className='container-fluid'>
           	<div className='col-sm-7 col-xs-12'>
