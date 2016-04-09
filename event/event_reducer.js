@@ -12,7 +12,7 @@ export default function eventReducer(state = INITIAL_STATE, action) {
 	case types.UPDATE_SUCCESS:
 		return state.mergeIn(['data'], action.payload.event)
 	case types.REMOVE_SUCCESS:
-		return state.removeIn(['data'], action.payload.event)
+		return state.removeIn(['data', action.payload.id])
 	default:
 		return state
 	}

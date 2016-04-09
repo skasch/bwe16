@@ -49,6 +49,7 @@ export class Event extends Component {
 							eventId={key}
 							event={this.props.eventList.get(key)}
 							updateEvent={this.props.updateEvent} 
+							removeEvent={this.props.removeEvent}
 						/>
 					})}
 				</div>

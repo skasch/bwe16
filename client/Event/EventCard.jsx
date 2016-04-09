@@ -5,6 +5,8 @@ import Card from 'material-ui/lib/card/card'
 import CardActions from 'material-ui/lib/card/card-actions'
 import CardHeader from 'material-ui/lib/card/card-header'
 import RaisedButton from 'material-ui/lib/raised-button'
+import FlatButton from 'material-ui/lib/flat-button'
+import Dialog from 'material-ui/lib/dialog'
 import CardText from 'material-ui/lib/card/card-text'
 import Avatar from 'material-ui/lib/avatar'
 import * as Colors from 'material-ui/lib/styles/colors'
@@ -16,6 +18,9 @@ export default class EventCard extends Component {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin
       .shouldComponentUpdate.bind(this)
+    this.state = {
+      deleteDialogOpen: false
+    }
   }
 
   momentConvert(time) {
@@ -38,9 +43,43 @@ export default class EventCard extends Component {
       startTime.format('ddd. H:mm') + endTime.format('-ddd. H:mm')
   }
 
+  handleOpenDeleteDialog() {
+    this.setState({deleteDialogOpen: true})
+  }
+
+  handleCancelDeleteDialog() {
+    this.setState({deleteDialogOpen: false})
+  }
+
+  handleConfirmDeleteDialog() {
+    this.props.removeEvent(this.props.eventId)
+    this.setState({deleteDialogOpen: false})
+  }
+
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={::this.handleCancelDeleteDialog}
+      />,
+      <FlatButton
+        label="Confirm"
+        primary={true}
+        onTouchTap={::this.handleConfirmDeleteDialog}
+      />,
+    ];
     return (
       <Card style={{margin:"8"}}>
+        <Dialog
+          title="Confirm event suppression"
+          actions={actions}
+          modal={false}
+          open={this.state.deleteDialogOpen}
+          onRequestClose={::this.handleCancelDeleteDialog}
+        >
+          Do you really want to delete this event?
+        </Dialog>
         <CardHeader
           title={this.props.event.get('name')}
           subtitle={this.props.event.get('location')}
@@ -67,7 +106,11 @@ export default class EventCard extends Component {
         <CardActions expandable={true}>
           <div className='container-fluid'>
             <div className='col-xs-6 col-sm-3'>
-              <RaisedButton label="Save" fullWidth={true}/>
+              <RaisedButton 
+                label="Delete"
+                fullWidth={true}
+                onTouchTap={::this.handleOpenDeleteDialog}
+              />
             </div>
             <div className='col-xs-6 col-sm-3 col-sm-offset-6'>
               <CreateEvent 
