@@ -5,11 +5,6 @@ import MenuItem from 'material-ui/lib/menus/menu-item'
 import IconButton from 'material-ui/lib/icon-button'
 import Menu from 'material-ui/lib/svg-icons/navigation/menu'
 import LeftMenu from './LeftMenu'
-import * as Colors from 'material-ui/lib/styles/colors'
-
-const headerStyle = {
-	'background-color': Colors.deepOrange700
-}
 
 class Header extends Component {
 	constructor(props) {
@@ -27,7 +22,6 @@ class Header extends Component {
 		return (
 			<div className='header-container'>
 				<AppBar
-					style={headerStyle}
 					title='Burning Weekend 2016'
 					iconClassNameRight="muidocs-icon-navigation-expand-more"
 					iconElementLeft={<IconButton onClick={::this.handleToggle}>

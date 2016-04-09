@@ -4,11 +4,11 @@ export function getEventRequest() {
 	return { type: types.GET_REQUEST }
 }
 
-export function getEventSuccess(events) {
+export function getEventSuccess(event) {
 	return {
 		type: types.GET_SUCCESS
 		,payload: {
-			events: events
+			event: event
 		}
 	}
 }

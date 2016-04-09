@@ -1,6 +1,8 @@
 import React, { propTypes, Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { connect } from 'react-redux'
+import { fromJS } from 'immutable'
+import Moment from 'moment'
 import FloatingActionButton from 'material-ui/lib/floating-action-button'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
 import DatePicker from 'material-ui/lib/date-picker/date-picker'
@@ -9,17 +11,9 @@ import Divider from 'material-ui/lib/divider'
 import Paper from 'material-ui/lib/paper'
 import * as Colors from 'material-ui/lib/styles/colors'
 
+import CreateEvent from './CreateEvent'
 import EventCard from './EventCard'
-import * as eventActionCreators from '../event/event_action_creators'
-
-const addEventStyle = {
-	position: 'absolute'
-  ,right: 16
-  ,bottom: 16
-}
-const addEventIconStyle = {
-	'background-color': Colors.deepOrange700
-}
+import * as eventActionCreators from '../../event/event_action_creators'
 
 export class Event extends Component {
   constructor(props) {
@@ -31,9 +25,7 @@ export class Event extends Component {
 	render() {
 		return (
 			<div>
-				<FloatingActionButton style={addEventStyle} iconStyle={addEventIconStyle}>
-	      	<ContentAdd />
-	    	</FloatingActionButton>
+				<CreateEvent />
 	    	<Paper zDepth={1} className='event-filtering'>
 	    		<div className="container">
 			      <div className='col-sm-6 col-xs-12'>
@@ -50,8 +42,12 @@ export class Event extends Component {
 					</div>
 	    	</Paper>
 	    	<Divider />
-				<div className="container" style={{marginTop:"16"}}>
-					<EventCard />
+				<div className="container">
+					{this.props.eventList.keySeq().map(key => {
+						console.log(key)
+						console.log(this.props.eventList.toJSON())
+						return <EventCard key={key} event={this.props.eventList.get(key)} />
+					})}
 				</div>
 			</div>
 		)
@@ -60,7 +56,9 @@ export class Event extends Component {
 Event.propTypes = {}
 
 function mapStoreToProps(state) {
-	return {}
+	return {
+		eventList: state.getIn(['event', 'data'])
+	}
 }
 
 export default connect(

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Moment from 'moment'
 import Card from 'material-ui/lib/card/card'
 import CardActions from 'material-ui/lib/card/card-actions'
 import CardHeader from 'material-ui/lib/card/card-header'
@@ -8,29 +9,45 @@ import Avatar from 'material-ui/lib/avatar'
 import * as Colors from 'material-ui/lib/styles/colors'
 
 export default class EventCard extends Component {
+  momentConvert(time) {
+    return Moment(new Date(time))
+  }
+
+  getTime(key) {
+    return this.momentConvert(this.props.event.get(key))
+  }
+
+  getTimeText() {
+    const startTime = ::this.getTime('startTime')
+    const endTime = ::this.getTime('endTime')
+    return (startTime.day() === endTime.day()) ?
+      startTime.format('ddd. H:mm') + endTime.format('-H:mm') :
+      startTime.format('ddd. H:mm') + endTime.format('-ddd. H:mm')
+  }
+
   render() {
     return (
-      <Card>
+      <Card style={{margin:"8"}}>
         <CardHeader
-          title="Yoga class"
-          subtitle="Yogaholics Camp"
+          title={this.props.event.get('name')}
+          subtitle={this.props.event.get('location')}
           actAsExpander={true}
           showExpandableButton={true}
           avatar={
             <Avatar
-              backgroundColor={Colors.indigo500}
+              backgroundColor={Colors.indigo400}
             >
-              9
+              {::this.getTime('startTime').hour()}
             </Avatar>
           }
         />
         <CardText expandable={true}>
           <div className='container-fluid'>
             <div className='col-xs-7 col-sm-7'>
-              Yoga class for morning stretching
+              {this.props.event.get('description')}
             </div>
             <div className='col-xs-5 col-sm-5 text-right'>
-              Sam. 9:00-12:00
+              {::this.getTimeText()}
             </div>
           </div>
         </CardText>

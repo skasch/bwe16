@@ -1,4 +1,4 @@
-var webpack = require('webpack')
+var Webpack = require('webpack')
 
 module.exports = {
 	entry: [
@@ -20,6 +20,10 @@ module.exports = {
 				test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$/
 				,loader: "url-loader?limit=100000" 
 			}
+			,{ 
+				test: /\.json$/
+				,loader: "json" 
+			}
 		]
 	}
 	,resolve: {
@@ -36,13 +40,14 @@ module.exports = {
 		,hot: true
 	}
 	,plugins: [
-		new webpack.HotModuleReplacementPlugin()
-	  ,new webpack.NoErrorsPlugin()
-	  ,new webpack.DefinePlugin({
+		new Webpack.HotModuleReplacementPlugin()
+	  ,new Webpack.NoErrorsPlugin()
+	  ,new Webpack.DefinePlugin({
 	    '__DEV__': true
 	    ,'process.env': {
 	      'NODE_ENV': JSON.stringify('development')
 	    }
+	    ,"global.GENTLY": false
 	  })
 	]
 	,debug: true

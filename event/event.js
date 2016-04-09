@@ -1,15 +1,17 @@
 import Request from 'superagent'
+import Config from '../config/config'
 
 import * as actionCreators from './event_action_creators'
-import { serverUrl } from '../server/app'
 
-const eventUrl = '/api/event'
+const serverUri = 'http://' + Config.get('server').get('host') + ':' +
+	Config.get('server').get('port')
+const eventUri = serverUri + '/api/event'
 
 export function getEvent() {
 	return dispatch => {
 		dispatch(actionCreators.getEventRequest())
 		return Request
-			.get(eventUrl)
+			.get(eventUri)
 			.set('Accept', 'application/json')
 			.end((err, res) => {
 				if (err) {
@@ -25,7 +27,7 @@ export function postEvent(event) {
 	return dispatch => {
 		dispatch(actionCreators.postEventRequest(event))
 		return Request
-			.post(eventUrl)
+			.post(eventUri)
 			.send(event)
 			.set('Accept', 'application/json')
 			.end((err, res) => {
@@ -42,7 +44,7 @@ export function updateEvent(event, id) {
 	return dispatch => {
 		dispatch(actionCreators.updateEventRequest(event, id))
 		return Request
-			.post(eventUrl + '/' + id)
+			.post(eventUri + '/' + id)
 			.send(event)
 			.set('Accept', 'application/json')
 			.end((err, res) => {
@@ -59,7 +61,7 @@ export function removeEvent(id) {
 	return dispatch => {
 		dispatch(actionCreators.removeEventRequest(id))
 		return Request
-			.del(eventUrl + '/' + id)
+			.del(eventUri + '/' + id)
 			.set('Accept', 'application/json')
 			.end((err, res) => {
 				if (err) {
