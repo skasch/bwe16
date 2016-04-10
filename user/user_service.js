@@ -11,7 +11,7 @@ function connect() {
 const db = config.get('db').get('db')
 
 export function intoSession(user, done) {
-	return done(null, user.id)
+	return done(null, user.keySeq().first())
 }
 
 export function outOfSession(userId, done) {
@@ -35,8 +35,9 @@ export function localAuthCallback(email, password, done) {
 			.then(users => {
 				if (!users[0])
 					done(null, false, { message: `Email ${email} not found` })
-				else if (user[0]['password'] === password)
-					done(null, user[0])
+				else if (users[0]['password'] === password)
+					done(null, Map().
+						set(fromJS(users[0]).get('id'), fromJS(users[0]).remove('id')))
 				else
 					done(null, false, { message: 'Invalid email or password' })
 			}))

@@ -5,19 +5,19 @@ import {
 	intoSession
 	,outOfSession
 	,localAuthCallback
-	,createUser
+	,post
 }
 from '../user/user_service'
 import * as keys from './keys.js'
 
-const local = new Strategy({ userNameField: 'email' }, localAuthCallback)
+const local = new Strategy({ usernameField: 'email' }, localAuthCallback)
 
 const facebook = new FacebookStrategy({
 	clientID: keys.facebook.clientID
 	,clientSecret: keys.facebook.clientSecret
 	,callbackURL: keys.facebook.callbackURL
 }, (accessToken = '', refreshToken = '', profile, done) => {
-	createUser(fromJS({
+	post(fromJS({
 		email: profile.email || ''
 		,name: {
 			displayName: profile.displayName || ''

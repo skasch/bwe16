@@ -10,7 +10,7 @@ import { getEvent, postEvent } from '../event/event'
 
 const store = makeStore()
 
-console.log(store.dispatch(getEvent()))
+store.dispatch(getEvent())
 
 ReactDom.render(
 	<Root store={store} history={hashHistory} routes={routes} />

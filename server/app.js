@@ -11,7 +11,8 @@ import WebpackHotMiddleware from 'webpack-hot-middleware'
 import config from '../config/config'
 import webpackConfig from '../webpack.config'
 import passportConfig from './passport_config'
-import { eventApi } from './api'
+import { eventApi, userApi } from './api'
+import authMiddleware from './auth_middleware'
 
 const app = Express()
 
@@ -50,9 +51,20 @@ app.use(Passport.session())
 passportConfig(Passport)
 
 app.get('/api/event', eventApi.get)
-app.post('/api/event', eventApi.post)
-app.post('/api/event/:id', eventApi.update)
-app.delete('/api/event/:id', eventApi.remove)
+app.post('/api/event', authMiddleware, eventApi.post)
+app.post('/api/event/:id', authMiddleware, eventApi.update)
+app.delete('/api/event/:id', authMiddleware, eventApi.remove)
+
+app.post('/auth/login', Passport.authenticate('local'), userApi.login)
+app.get('/auth/logout', userApi.logout)
+app.post('/auth/register', userApi.register)
+
+app.get('/auth/facebook', Passport.authenticate('facebook'))
+app.get('/auth/facebook/callback', Passport.authenticate('facebook', {
+	callbackURL: '/auth/facebook/callback'
+  ,successRedirect: '/'
+  ,failureRedirect: '/login'
+}))
 
 if (!isProduction) {
 	app.get('*', (req, res) => {
