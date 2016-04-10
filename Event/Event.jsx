@@ -13,7 +13,7 @@ import * as Colors from 'material-ui/lib/styles/colors'
 
 import CreateEvent from './CreateEvent'
 import EventCard from './EventCard'
-import * as eventActions from '../../event/event'
+import * as eventActions from '../event/event'
 
 export class Event extends Component {
   constructor(props) {

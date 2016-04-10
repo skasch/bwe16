@@ -1,5 +1,5 @@
 import {Map} from 'immutable'
-import * as eventService from './event_service'
+import * as eventService from '../event/event_service'
 
 function factorService(service) {
 	return {

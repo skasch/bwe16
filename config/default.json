@@ -5,6 +5,10 @@
 		,"db": "bwe2016"
 		,"tables": [
 			"event"
+			,"user"
 		]
+		,"indexes": {
+			"user": "email"
+		}
 	}
 }

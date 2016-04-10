@@ -4,6 +4,7 @@ import config from '../config/config'
 
 const DATABASE = config.get('db').get('db')
 const TABLES = config.get('db').get('tables')
+const INDEXES = config.get('db').get('indexes')
 
 export default function setup() {
 	return r
@@ -39,6 +40,25 @@ export default function setup() {
 							} else {
 								console.log('Table already exists', table)
 								return Promise.resolve(true)
+							}
+						})
+				})))
+				.then(() => Promise.all(TABLES.map(table => {
+					return r
+						.db(DATABASE)
+						.table(table)
+						.indexList()
+						.run(conn)
+						.then(list => {
+							if (INDEXES.get(table) &&
+								list.indexOf(INDEXES.get(table)) === -1) {
+								console.log('Create index', INDEXES.get(table), 
+									'for table', table)
+								return r
+									.db(DATABASE)
+									.table(table)
+									.indexCreate(INDEXES.get(table))
+									.run(conn)
 							}
 						})
 				})))

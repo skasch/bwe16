@@ -8,7 +8,7 @@ import {
 	,post
 	,update
 	,remove 
-} from '../server/event_service'
+} from '../event/event_service'
 
 
 describe('eventService', () => {

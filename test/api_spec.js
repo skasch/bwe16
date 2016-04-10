@@ -5,7 +5,7 @@ import {expect} from 'chai'
 
 import setup from '../server/setup.js'
 import { eventApi } from '../server/api'
-import { get, remove } from '../server/event_service'
+import { get, remove } from '../event/event_service'
 import app from '../server/app' 
 
 describe('eventApi', () => {

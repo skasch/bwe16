@@ -14,7 +14,9 @@ describe('store', () => {
 				working: false
 				,error: ''
 			}
-			,event: {}
+			,event: {
+				data: {}
+			}
 		}))
 
 		store.dispatch({ type: eventTypes.GET_REQUEST })
@@ -24,7 +26,9 @@ describe('store', () => {
 		store.dispatch({
 			type: eventTypes.POST_SUCCESS
 			,payload: {
-				foo: 'bar'
+				event: {
+					foo: 'bar'
+				}
 			}
 		})
 

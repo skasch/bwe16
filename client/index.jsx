@@ -4,8 +4,8 @@ import { hashHistory } from 'react-router'
 import { fromJS, toJSON } from 'immutable'
 import Moment from 'moment'
 import makeStore from '../flux/store'
-import Root from './App/Root'
-import routes from './App/routes'
+import Root from '../App/Root'
+import routes from '../App/routes'
 import { getEvent, postEvent } from '../event/event'
 
 const store = makeStore()

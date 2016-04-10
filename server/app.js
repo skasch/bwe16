@@ -1,5 +1,8 @@
 import Express from 'express'
 import BodyParser from 'body-parser'
+import Morgan from 'morgan'
+import ExpressSession from 'express-session'
+import Passport from 'passport'
 import Path from 'path'
 import Webpack from 'webpack'
 import WebpackDevMiddleware from 'webpack-dev-middleware'
@@ -7,12 +10,14 @@ import WebpackHotMiddleware from 'webpack-hot-middleware'
 
 import config from '../config/config'
 import webpackConfig from '../webpack.config'
+import passportConfig from './passport_config'
 import { eventApi } from './api'
 
 const app = Express()
 
 app.use(BodyParser.urlencoded({ extended: false }))
 app.use(BodyParser.json())
+app.use(Morgan('dev'))
 
 const isProduction = process.env.NOVE_ENV === 'production'
 const port = isProduction ? process.env.PORT : config.get('server').get('port')
@@ -29,6 +34,20 @@ if (!isProduction) {
 	app.use(wpMiddleware)
 	app.use(WebpackHotMiddleware(compiler))
 } 
+
+app.use(ExpressSession({
+	secret: 'PUT_IN_ENV'
+	,resave: false
+	,saveUninitialized: false
+	,cookie: {
+		httpOnly: true
+		,secure: false
+		,maxAge: 86400000
+	}
+}))
+app.use(Passport.initialize())
+app.use(Passport.session())
+passportConfig(Passport)
 
 app.get('/api/event', eventApi.get)
 app.post('/api/event', eventApi.post)
