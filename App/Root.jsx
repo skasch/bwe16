@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
-import routes from './routes'
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import DevTools from './DevTools'
 
 injectTapEventPlugin()
 
