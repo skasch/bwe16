@@ -4,10 +4,10 @@ import Moment from 'moment'
 import Card from 'material-ui/lib/card/card'
 import CardActions from 'material-ui/lib/card/card-actions'
 import CardHeader from 'material-ui/lib/card/card-header'
+import CardText from 'material-ui/lib/card/card-text'
 import RaisedButton from 'material-ui/lib/raised-button'
 import FlatButton from 'material-ui/lib/flat-button'
 import Dialog from 'material-ui/lib/dialog'
-import CardText from 'material-ui/lib/card/card-text'
 import Avatar from 'material-ui/lib/avatar'
 import * as Colors from 'material-ui/lib/styles/colors'
 
@@ -105,13 +105,17 @@ export default class EventCard extends Component {
         </CardText>
         <CardActions expandable={true}>
           <div className='container-fluid'>
+          {(this.props.isAuth) ?
             <div className='col-xs-6 col-sm-3'>
               <RaisedButton 
                 label="Delete"
                 fullWidth={true}
                 onTouchTap={::this.handleOpenDeleteDialog}
               />
-            </div>
+            </div> :
+            null
+          }
+          {(this.props.isAuth) ?
             <div className='col-xs-6 col-sm-3 col-sm-offset-6'>
               <CreateEvent 
                 eventId={this.props.eventId} 
@@ -124,7 +128,9 @@ export default class EventCard extends Component {
                 description={this.props.event.get('description')}
                 location={this.props.event.get('location')}
               />
-            </div>
+            </div> :
+            null
+          }
           </div>
         </CardActions>
       </Card>

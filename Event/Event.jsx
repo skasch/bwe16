@@ -25,7 +25,9 @@ export class Event extends Component {
 	render() {
 		return (
 			<div>
-				<CreateEvent postEvent={this.props.postEvent} create={true}/>
+				{(this.props.isAuth) ?
+					<CreateEvent postEvent={this.props.postEvent} create={true}/> :
+					null}
 	    	<Paper zDepth={1} className='event-filtering'>
 	    		<div className="container">
 			      <div className='col-sm-6 col-xs-12'>
@@ -50,6 +52,7 @@ export class Event extends Component {
 							event={this.props.eventList.get(key)}
 							updateEvent={this.props.updateEvent} 
 							removeEvent={this.props.removeEvent}
+							isAuth={this.props.isAuth}
 						/>
 					})}
 				</div>
@@ -57,11 +60,11 @@ export class Event extends Component {
 		)
 	}
 }
-Event.propTypes = {}
 
 function mapStoreToProps(state) {
 	return {
 		eventList: state.getIn(['event', 'data'])
+		,isAuth: state.getIn(['user', 'isAuthenticated'])
 	}
 }
 

@@ -20,7 +20,7 @@ export function loginUser(user) {
 			.set('Accept', 'application/json')
 			.end((err, res) => {
 				if (err) {
-					dispatch(actionCreators.loginUserFailure(err, err.status))
+					dispatch(actionCreators.loginUserFailure(res.body, res.status))
 				} else {
 					dispatch(actionCreators.loginUserSuccess(res.body))
 					dispatch(routerActions.push('/'))
@@ -39,7 +39,7 @@ export function logoutUser() {
 			.set('Accept', 'application/json')
 			.end((err, res) => {
 				if (err) {
-					dispatch(actionCreators.logoutUserFailure(err, err.status))
+					dispatch(actionCreators.logoutUserFailure(res.body, res.status))
 				} else {
 					dispatch(actionCreators.logoutUserSuccess())
 					dispatch(routerActions.push('/'))
@@ -59,7 +59,7 @@ export function registerUser(user) {
 			.send(user)
 			.end((err, res) => {
 				if (err) {
-					dispatch(actionCreators.registerUserFailure(err, err.status))
+					dispatch(actionCreators.registerUserFailure(res.body, res.status))
 				} else {
 					dispatch(actionCreators.registerUserSuccess(res.body))
 					dispatch(routerActions.push('/'))
@@ -77,7 +77,7 @@ export function getUser(userId) {
     	.set('Accept', 'application/json')
 			.end((err, res) => {
 				if (err) {
-					dispatch(actionCreators.getUserFailure(err, err.status))
+					dispatch(actionCreators.getUserFailure(res.body, res.status))
 				} else {
 					dispatch(actionCreators.getUserSuccess(res.body))
 				}

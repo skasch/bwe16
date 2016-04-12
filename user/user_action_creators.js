@@ -101,3 +101,12 @@ export function getUserFailure(error, status) {
 		}
 	}
 }
+
+export function authUser(user) {
+	return {
+		type: types.AUTH
+		,payload: {
+			user: user
+		}
+	}
+}

@@ -1,17 +1,26 @@
 import React from 'react'
+import { fromJS } from 'immutable'
 import ReactDom from 'react-dom'
 import { hashHistory } from 'react-router'
-import { fromJS, toJSON } from 'immutable'
-import Moment from 'moment'
 import makeStore from '../flux/store'
 import Root from '../App/Root'
 import routes from '../App/routes'
-import { getEvent, postEvent } from '../event/event'
+import { getEvent } from '../event/event'
 
-const store = makeStore()
+const initialState = window.__INITIAL_STATE__
+
+const store = makeStore(fromJS(initialState))
 
 store.dispatch(getEvent())
 
+export function authRedirection(nextState, replace) {
+  if (store.getState().getIn(['user', 'isAuthenticated'])) {
+    replace({
+      pathname: '/account',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
 ReactDom.render(
 	<Root store={store} history={hashHistory} routes={routes} />
 	,document.getElementById('app')

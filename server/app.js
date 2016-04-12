@@ -13,6 +13,7 @@ import webpackConfig from '../webpack.config'
 import passportConfig from './passport_config'
 import { eventApi, userApi } from './api'
 import authMiddleware from './auth_middleware'
+import initialRender from './index.jsx'
 
 const app = Express()
 
@@ -55,7 +56,22 @@ app.post('/api/event', authMiddleware, eventApi.post)
 app.post('/api/event/:id', authMiddleware, eventApi.update)
 app.delete('/api/event/:id', authMiddleware, eventApi.remove)
 
-app.post('/auth/login', Passport.authenticate('local'), userApi.login)
+app.post('/auth/login', (req, res, next) => {
+  Passport.authenticate('local', (err, user, info) => {
+    if (err)
+      return next(err)
+    if (!user)
+      return next(info.message)
+    req.logIn(user, err => {
+      if (err)
+        return next(err)
+      return res.json(info)
+    })
+  })(req, res, next)
+}, userApi.login)
+// app.post('/auth/login', Passport.authenticate('local',{
+
+// }), userApi.login)
 app.get('/auth/logout', userApi.logout)
 app.post('/auth/register', userApi.register)
 
@@ -67,10 +83,18 @@ app.get('/auth/facebook/callback', Passport.authenticate('facebook', {
 }))
 
 if (!isProduction) {
-	app.get('*', (req, res) => {
-		res.sendFile(Path.resolve(__dirname + '/../dist/index.html'))
-	})
+	app.get('*', initialRender)
 } 
+
+app.use((err, req, res, next) => {
+	console.log('ERROR HANDLER:')
+	console.log(err)
+	res.status(err.status || 500)
+	res.json({
+		message: err.message
+		,error: err
+	})
+})
 
 app.set('port', port)
 

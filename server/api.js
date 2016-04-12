@@ -66,6 +66,7 @@ export const userApi = {
 			.error(next)
 	}
 	,login: (req, res) => {
+		console.log(req)
 		res.status(200)
 			.json(filterUserProps(req.user))
 	}

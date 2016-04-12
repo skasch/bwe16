@@ -16,28 +16,24 @@ const facebook = new FacebookStrategy({
 	clientID: keys.facebook.clientID
 	,clientSecret: keys.facebook.clientSecret
 	,callbackURL: keys.facebook.callbackURL
+  ,profileFields: ['id', 'displayName', 'email']
 }, (accessToken = '', refreshToken = '', profile, done) => {
+	console.log(profile)
 	post(fromJS({
 		email: profile.email || ''
-		,name: {
-			displayName: profile.displayName || ''
-			,familyName: profile.name.familyName || ''
-			,givenName: profile.name.givenName || ''
-		}
+		,name: profile.displayName || ''
 		,auth: {
 			id: profile.id || ''
 			,type: 'facebook'
 			,accessToken
 			,refreshToken
 		}
-		,gender: profile.gender || ''
-		,picture: profile.profileUrl || ''
 	}))
 		.then(user => {
 			if (user.get('err'))
-				done(null, user, { message: user.get('err')})
+				done(null, fromJS(user), { message: user.get('err')})
 			else 
-				done(null, user, { message: 'Account created with Facebook '})
+				done(null, fromJS(user), { message: 'Account created with Facebook '})
 		})
 })
 

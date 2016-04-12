@@ -21,10 +21,17 @@ export function outOfSession(userId, done) {
 			.table('user')
 			.get(userId)
 			.run(conn)
-			.then(user => done(null, user)))
+			.then(user => done(null, Map().
+						set(fromJS(user).get('id'), 
+							fromJS(user)
+								.remove('id')
+								.remove('password')
+								.remove('serverdate')))))
 }
 
 export function localAuthCallback(email, password, done) {
+	if (email === '' || password === '')
+		done(null, false, { message: 'Invalid email or password' })
 	return connect()
 		.then(conn => r
 			.db(db)
@@ -67,6 +74,10 @@ export function post(user, fields = {}) {
 						.run(conn)
 						.then(res => Map().set(res.generated_keys[0], serverUser))
 				} else {
+					if (user.get('auth') && 
+						user.get('auth').get('type') === 'facebook') {
+						return getByEmail(user.get('email'))
+					}
 					return Map().set('err', 'Email already in use')
 				}
 			}))

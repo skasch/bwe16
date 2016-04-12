@@ -18,10 +18,18 @@ export default function userReducer(state = INITIAL_STATE, action) {
 			return state.merge(fromJS({
 				usersById: action.payload.user
 			}))
-		case types.
-		default:
+		case types.LOGIN.SUCCESS:
 			return state.merge(fromJS({
-				userById: action.payload.user
+				currentUser: action.payload.user
+				,isAuthenticated: true
 			}))
+		case types.AUTH:
+			return state.merge(fromJS({
+				currentUser: action.payload.user
+				,isAuthenticated: true
+				,usersById: action.payload.user.keySeq().first()
+			}))
+		default:
+			return state
 	}
 } 

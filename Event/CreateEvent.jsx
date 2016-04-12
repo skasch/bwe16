@@ -205,10 +205,10 @@ export default class CreateEvent extends Component {
         >
         	<TextField
         		hintText='Event title'
+        		value={this.state.name}
         		errorText={this.state.nameError}
         		fullWidth={true}
         		onChange={::this.handleNameChange}
-        		value={this.state.name}
         	/>
       		<AutoComplete 
       			hintText="Location"

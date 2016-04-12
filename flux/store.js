@@ -3,14 +3,16 @@ import ThunkMiddleware from 'redux-thunk'
 import { routerMiddleware } from 'react-router-redux'
 import { hashHistory } from 'react-router'
 import reducer from './reducer'
+import DevTools from '../App/DevTools'
 
-export default function makeStore() {
+export default function makeStore(initialState) {
 	const createStoreWithMiddleware = compose(
 		applyMiddleware(ThunkMiddleware)
 		,applyMiddleware(routerMiddleware(hashHistory))
+  	,DevTools.instrument()
 	)(createStore)
 
-	const store = createStoreWithMiddleware(reducer)
+	const store = createStoreWithMiddleware(reducer, initialState)
 
   if (module.hot) {
     module.hot.accept('./reducer', () => {
