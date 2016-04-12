@@ -22,7 +22,7 @@ export function get() {
 		.then(conn => r
 			.db(config.get('db').get('db'))
 			.table('event')
-			.orderBy(r.desc('serverdate'))
+			.orderBy('startTime')
 			.run(conn)
 			.then(res => res.toArray())
 			.then(fromJS)

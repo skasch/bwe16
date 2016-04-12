@@ -79,7 +79,7 @@ export default class Header extends Component {
 			      	leftIcon={<EventIcon/>}
 			      	onTouchTap={::this.openEvent}
 			      >Events</MenuItem>
-			      <MenuItem leftIcon={<MapIcon/>}>Map</MenuItem>
+			      {/*<MenuItem leftIcon={<MapIcon/>}>Map</MenuItem>*/}
 			     </div>
 	      </LeftNav>
 	    </div>

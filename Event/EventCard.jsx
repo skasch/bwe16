@@ -56,6 +56,12 @@ export default class EventCard extends Component {
     this.setState({deleteDialogOpen: false})
   }
 
+  avatarColor() {
+    const startTime = ::this.getTime('startTime')
+    return (startTime.format('DD') % 2 === 0) ? Colors.indigo400 : 
+      Colors.deepOrange400
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -87,7 +93,7 @@ export default class EventCard extends Component {
           showExpandableButton={true}
           avatar={
             <Avatar
-              backgroundColor={Colors.indigo400}
+              backgroundColor={::this.avatarColor()}
             >
               {::this.getTime('startTime').hour()}
             </Avatar>

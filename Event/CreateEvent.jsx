@@ -36,7 +36,7 @@ export default class CreateEvent extends Component {
     	.shouldComponentUpdate.bind(this)
     this.state = {
       open: false
-			,owner: 'Burning Fanny'
+			,owner: this.props.owner
 			,name: this.props.name
 			,startDay: this.props.startTime
 			,startTime: this.props.startTime
@@ -53,6 +53,12 @@ export default class CreateEvent extends Component {
 			,locationError: null
     }
   }
+
+  componentWillReceiveProps(newProps) {
+	  if (newProps.owner !== this.state.owner) {
+	    this.setState({ owner: newProps.owner });
+	  }
+	}
 	
 	handleOpen() {
     this.setState({open: true})
