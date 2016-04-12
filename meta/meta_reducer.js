@@ -41,6 +41,10 @@ export default function metaReducer(state = INITIAL_STATE, action) {
 		return state.merge(fromJS({
 			working: true
 		}))
+	case userTypes.UPDATE.REQUEST:
+		return state.merge(fromJS({
+			working: true
+		}))
 	case eventTypes.GET_SUCCESS:
 		return state.merge(fromJS({
 			working: false
@@ -72,6 +76,11 @@ export default function metaReducer(state = INITIAL_STATE, action) {
 	case userTypes.REGISTER.SUCCESS:
 		return state.merge(fromJS({
 			working: false
+		}))
+	case userTypes.UPDATE.SUCCESS:
+		return state.merge(fromJS({
+			working: false
+			,updateSuccess: true
 		}))
 	case eventTypes.GET_FAILURE:
 		return state.merge(fromJS({
@@ -112,6 +121,12 @@ export default function metaReducer(state = INITIAL_STATE, action) {
 			,status: action.meta.status
 		}))
 	case userTypes.REGISTER.FAILURE:
+		return state.merge(fromJS({
+			working: false
+			,error: action.meta.error
+			,status: action.meta.status
+		}))
+	case userTypes.UPDATE.FAILURE:
 		return state.merge(fromJS({
 			working: false
 			,error: action.meta.error

@@ -102,13 +102,12 @@ export function getUserFailure(error, status) {
 	}
 }
 
-export function updateUserRequest(userId, field, value) {
+export function updateUserRequest(userId, user) {
 	return {
 		type: types.UPDATE.REQUEST
 		,payload: {
 			userId: userId
-			,field: field
-			,value: value
+			,user: user
 		}
 	}
 }

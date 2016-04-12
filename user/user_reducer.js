@@ -23,6 +23,8 @@ export default function userReducer(state = INITIAL_STATE, action) {
 				currentUser: action.payload.user
 				,isAuthenticated: true
 			}))
+		case types.UPDATE.SUCCESS:
+			return state.mergeIn('currentUser', action.payload.user)
 		case types.AUTH:
 			return state.merge(fromJS({
 				currentUser: action.payload.user

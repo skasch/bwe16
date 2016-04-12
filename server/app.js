@@ -56,6 +56,8 @@ app.post('/api/event', authMiddleware, eventApi.post)
 app.post('/api/event/:id', authMiddleware, eventApi.update)
 app.delete('/api/event/:id', authMiddleware, eventApi.remove)
 
+app.post('/api/user/:id', authMiddleware, userApi.update)
+
 app.post('/auth/login', (req, res, next) => {
   Passport.authenticate('local', (err, user, info) => {
     if (err)
@@ -69,9 +71,6 @@ app.post('/auth/login', (req, res, next) => {
     })
   })(req, res, next)
 }, userApi.login)
-// app.post('/auth/login', Passport.authenticate('local',{
-
-// }), userApi.login)
 app.get('/auth/logout', userApi.logout)
 app.post('/auth/register', userApi.register)
 

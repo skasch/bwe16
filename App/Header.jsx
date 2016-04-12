@@ -35,6 +35,11 @@ export default class Header extends Component {
   	this.handleToggle(false)
   }
 
+  openAccount() {
+  	this.props.account()
+  	this.handleToggle(false)
+  }
+
   openEvent() {
   	this.props.event()
   	this.handleToggle(false)
@@ -64,6 +69,7 @@ export default class Header extends Component {
 					  {(this.props.isAuth) ? 
 					  	<MenuItem 
 						  	leftIcon={<Avatar src={require('../img/avatar_french_burners.jpg')} />}
+						  	onTouchTap={::this.openAccount}
 						  >{this.props.userName}</MenuItem> :
 						  <MenuItem 
 						  	leftIcon={<Avatar src={require('../img/avatar_french_burners.jpg')} />}

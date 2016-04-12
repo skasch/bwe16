@@ -51,18 +51,20 @@ export function localAuthCallback(email, password, done) {
 }
 
 export function post(user, fields = {}) {
+	console.log(user)
 	const serverUser = fromJS({
 		serverdate: new Date()
 		,name: xss(user.get('name')) || {}
 		,email: xss(user.get('email'))
 		,password: xss(user.get('password'))
 		,groupId: ''
+		,facebookId: xss(user.get('auth').get('id'))
 	}).merge(fromJS(fields))
 	return connect()
 		.then(conn => r
 			.db(db)
 			.table('user')
-			.getAll(serverUser.get('email'), { index: 'email' })
+			.getAll(serverUser.get('facebookId'), { index: 'facebookId' })
 			.run(conn)
 			.then(cursor => cursor.toArray())
 			.then(users => {
@@ -70,37 +72,57 @@ export function post(user, fields = {}) {
 					return r
 						.db(db)
 						.table('user')
-						.insert(serverUser.toJSON())
+						.getAll(serverUser.get('email'), { index: 'email' })
 						.run(conn)
-						.then(res => Map().set(res.generated_keys[0], serverUser))
+						.then(cursor => cursor.toArray())
+						.then(users => {
+							if (users.length === 0) {
+								return r
+									.db(db)
+									.table('user')
+									.insert(serverUser.toJSON())
+									.run(conn)
+									.then(res => Map().set(res.generated_keys[0], serverUser))
+							} else {
+								return Map().set('err', 'Email already in use')
+							}
+						})
 				} else {
-					if (user.get('auth') && 
-						user.get('auth').get('type') === 'facebook') {
-						return getByEmail(user.get('email'))
-					}
-					return Map().set('err', 'Email already in use')
+					return getByFacebookId(user.get('auth').get('id'))
 				}
 			}))
 }
 
-export function update(userId, field, value) {
+export function update(userId, user) {
+	const authPasswd = user.get('authPasswd')
+	const field = (user.get('field') === 'email') ?
+		'email' : 'password'
 	const serverUser = fromJS({
 		serverdate: new Date()
-	}).set(field, xss(value))
+	}).set(field, xss(user.get('value')))
 	return connect()
 		.then(conn => r
 			.db(db)
 			.table('user')
 			.get(userId)
-			.update(serverUser.toJSON())
 			.run(conn)
-			.then(() => r
-				.db(db)
-				.table('user')
-				.get(userId)
-				.run(conn))
-			.then(fromJS)
-			.then(res => Map().set(res.get('id'), res.remove('id'))))
+			.then(currentUser => {
+				if (currentUser.password !== authPasswd)
+					return Map().set('err', 'Invalid password') 
+				return r
+					.db(db)
+					.table('user')
+					.get(userId)
+					.update(serverUser.toJSON())
+					.run(conn)
+					.then(() => r
+						.db(db)
+						.table('user')
+						.get(userId)
+						.run(conn))
+					.then(fromJS)
+					.then(res => Map().set(res.get('id'), res.remove('id')))
+			}))
 }
 
 export function get(userId) {
@@ -115,12 +137,26 @@ export function get(userId) {
 			.error(err => err))
 }
 
-export function getByEmail(email) {
+// export function getByEmail(email) {
+// 	return connect()
+// 		.then(conn => r
+// 			.db(db)
+// 			.table('user')
+// 			.getAll(email, { index: 'email' })
+// 			.run(conn)
+// 			.then(cursor => cursor.toArray())
+// 			.then(user => user[0])
+// 			.then(fromJS)
+// 			.then(res => Map().set(res.get('id'), res.remove('id')))
+// 			.error(err => err))
+// }
+
+export function getByFacebookId(facebookId) {
 	return connect()
 		.then(conn => r
 			.db(db)
 			.table('user')
-			.getAll(email, { index: 'email' })
+			.getAll(facebookId, { index: 'facebookId' })
 			.run(conn)
 			.then(cursor => cursor.toArray())
 			.then(user => user[0])

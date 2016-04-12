@@ -18,7 +18,6 @@ const facebook = new FacebookStrategy({
 	,callbackURL: keys.facebook.callbackURL
   ,profileFields: ['id', 'displayName', 'email']
 }, (accessToken = '', refreshToken = '', profile, done) => {
-	console.log(profile)
 	post(fromJS({
 		email: profile.email || ''
 		,name: profile.displayName || ''
@@ -30,6 +29,7 @@ const facebook = new FacebookStrategy({
 		}
 	}))
 		.then(user => {
+			console.log(user)
 			if (user.get('err'))
 				done(null, fromJS(user), { message: user.get('err')})
 			else 

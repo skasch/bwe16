@@ -40,6 +40,7 @@ class App extends Component {
 					<Header 
 						isAuth={this.props.isAuth} 
 						login={this.props.login}
+						account={this.props.account}
 						event={this.props.event}
 						userName={this.props.userName}
 					/>
@@ -67,6 +68,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		login: () => dispatch(routerActions.push('/login'))
+		,account: () => dispatch(routerActions.push('/account'))
 		,event: () => dispatch(routerActions.push('/'))
 	}
 }

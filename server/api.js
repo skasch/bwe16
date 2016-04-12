@@ -47,8 +47,6 @@ function filterUserProps(user) {
 		[id]: {
 			name: user.get(id).get('name') || {}
 			,email: user.get(id).get('email')
-			,picture: user.get(id).get('picture') || ''
-			,groupId: user.get(id).get('groupId') || ''
 		}
 	})
 }
@@ -66,17 +64,29 @@ export const userApi = {
 			.error(next)
 	}
 	,login: (req, res) => {
-		console.log(req)
 		res.status(200)
 			.json(filterUserProps(req.user))
 	}
 	,logout: (req, res) => {
 		req.logout()
-		req.status(200)
-			.json(filterUserProps(req.user))
+		res.status(200)
+			.json(req.user)
 	}
 	,register: (req, res, next) => {
 		userService.post(fromJS(req.body))
+			.then(user => {
+				if (user.get('err')) next(user.get('err')) 
+				else {
+					req.logIn(user, err => {
+						if (err) next(err)
+						res.status(200)
+							.json(filterUserProps(user))
+					})	
+				}
+			})
+	}
+	,update: (req, res, next) => {
+		userService.update(req.params.id, fromJS(req.body))
 			.then(user => {
 				if (user.get('err')) next(user.get('err')) 
 				else {

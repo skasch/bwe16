@@ -68,6 +68,24 @@ export function registerUser(user) {
 	}
 }
 
+export function updateUser(userId, user) {
+	return dispatch => {
+		dispatch(actionCreators.updateUserRequest(userId, user))
+		return Request
+			.post(userUri + '/' + userId)
+			.withCredentials()
+			.set('Accept', 'application/json')
+			.send(user)
+			.end((err, res) => {
+				if (err) {
+					dispatch(actionCreators.updateUserFailure(res.body, res.status))
+				} else {
+					dispatch(actionCreators.updateUserSuccess(res.body))
+				}
+			})
+	}
+}
+
 export function getUser(userId) {
   return (dispatch) => {
     dispatch(getUserRequest(userId))

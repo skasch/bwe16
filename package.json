@@ -7,6 +7,7 @@
     "test": "mocha --timeout 5000 --compilers js:babel-core/register --require ./test/test_helper.js  --recursive",
     "test:watch": "npm run test -- -watch",
     "start": "babel-node server.js",
+    "setupdb": "babel-node server/setup.js",
     "start-dev": "nodemon --exec babel-node --ignore client/ server.js"
   },
   "keywords": [],
