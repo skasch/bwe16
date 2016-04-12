@@ -102,6 +102,36 @@ export function getUserFailure(error, status) {
 	}
 }
 
+export function updateUserRequest(userId, field, value) {
+	return {
+		type: types.UPDATE.REQUEST
+		,payload: {
+			userId: userId
+			,field: field
+			,value: value
+		}
+	}
+}
+
+export function updateUserSuccess(user) {
+	return {
+		type: types.UPDATE.SUCCESS
+		,payload: {
+			user: user
+		}
+	}
+}
+
+export function updateUserFailure(error, status) {
+	return {
+		type: types.UPDATE.FAILURE
+		,meta: {
+			error: error
+			,status: status
+		}
+	}
+}
+
 export function authUser(user) {
 	return {
 		type: types.AUTH

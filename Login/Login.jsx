@@ -43,6 +43,9 @@ class Login extends Component {
   	if (!this.state.email || this.state.email === '') {
   		this.setState({ emailError: 'The email field cannot be empty' })
   		valid = false
+  	} else if (/\A[^@]+@([^@\.]+\.)+[^@\.]+\z/.test(this.state.email)) {
+  		this.setState({ emailError: 'The email field is invalid' })
+  		valid = false
   	}
   	if (!this.state.password || this.state.password === '') {
   		this.setState({ passwordError: 'The password field cannot be empty' })
@@ -186,7 +189,7 @@ class Login extends Component {
 	}
 }
 
-const mapStatToProps = (state) => {
+const mapStateToProps = (state) => {
 	return {
 		isAuth: state.getIn(['user', 'isAuthenticated'])
 	}
@@ -201,6 +204,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(
-	mapStatToProps
+	mapStateToProps
 	,mapDispatchToProps
 )(Login)

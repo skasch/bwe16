@@ -51,7 +51,7 @@ class App extends Component {
 	}
 }
 
-function mapStoreToProps(state) {
+function mapStateToProps(state) {
 	return {
 		isAuth: state.getIn(['user', 'isAuthenticated'])
 		,error: state.getIn(['meta', 'error'])
@@ -72,6 +72,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(
-	mapStoreToProps
+	mapStateToProps
 	,mapDispatchToProps
 )(App)

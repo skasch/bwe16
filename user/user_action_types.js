@@ -12,4 +12,5 @@ export const GET = requestBundle('GET')
 export const LOGIN = requestBundle('LOGIN')
 export const LOGOUT = requestBundle('LOGOUT')
 export const REGISTER = requestBundle('REGISTER')
+export const UPDATE = requestBundle('UPDATE')
 export const AUTH = prefix + 'AUTH'

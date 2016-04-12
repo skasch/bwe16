@@ -61,7 +61,7 @@ export class Event extends Component {
 	}
 }
 
-function mapStoreToProps(state) {
+function mapStateToProps(state) {
 	return {
 		eventList: state.getIn(['event', 'data'])
 		,isAuth: state.getIn(['user', 'isAuthenticated'])
@@ -69,6 +69,6 @@ function mapStoreToProps(state) {
 }
 
 export default connect(
-	mapStoreToProps
+	mapStateToProps
 	,eventActions
 )(Event)

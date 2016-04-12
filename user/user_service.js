@@ -83,6 +83,26 @@ export function post(user, fields = {}) {
 			}))
 }
 
+export function update(userId, field, value) {
+	const serverUser = fromJS({
+		serverdate: new Date()
+	}).set(field, xss(value))
+	return connect()
+		.then(conn => r
+			.db(db)
+			.table('user')
+			.get(userId)
+			.update(serverUser.toJSON())
+			.run(conn)
+			.then(() => r
+				.db(db)
+				.table('user')
+				.get(userId)
+				.run(conn))
+			.then(fromJS)
+			.then(res => Map().set(res.get('id'), res.remove('id'))))
+}
+
 export function get(userId) {
 	return connect()
 		.then(conn => r

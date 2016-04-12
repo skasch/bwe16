@@ -7,13 +7,13 @@ import Root from '../App/Root'
 import routes from '../App/routes'
 import { getEvent } from '../event/event'
 
-const initialState = window.__INITIAL_STATE__
+const initialState = (window) ? null : window.__INITIAL_STATE__
 
 const store = makeStore(fromJS(initialState))
 
 store.dispatch(getEvent())
 
-export function authRedirection(nextState, replace) {
+export function alreadyAuth(nextState, replace) {
   if (store.getState().getIn(['user', 'isAuthenticated'])) {
     replace({
       pathname: '/account',
@@ -21,6 +21,16 @@ export function authRedirection(nextState, replace) {
     })
   }
 }
+
+export function requireAuth(nextState, replace) {
+  if (!store.getState().getIn(['user', 'isAuthenticated'])) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
 ReactDom.render(
 	<Root store={store} history={hashHistory} routes={routes} />
 	,document.getElementById('app')
