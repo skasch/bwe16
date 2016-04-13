@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "webpack -p --config webpack.config.prod.js",
     "test": "mocha --timeout 5000 --compilers js:babel-core/register --require ./test/test_helper.js  --recursive",
     "test:watch": "npm run test -- -watch",
-    "start": "babel-node server.js",
+    "start": "NODE_ENV=production babel-node server.js",
     "setupdb": "babel-node server/setup.js",
-    "start-dev": "nodemon --exec babel-node --ignore client/ server.js"
+    "start-dev": "NODE_ENV=development nodemon --exec babel-node --ignore client/ server.js"
   },
   "keywords": [],
   "author": "",
