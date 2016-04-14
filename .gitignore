@@ -2,3 +2,4 @@ node_modules/
 rethinkdb_data/
 bundle.js
 keys.js
+npm-debug.log
