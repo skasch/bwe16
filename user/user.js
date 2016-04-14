@@ -4,8 +4,6 @@ import Config from '../config/config'
 
 import * as actionCreators from './user_action_creators'
 
-// const serverUri = 'https://' + Config.get('server').get('host') + ':' +
-// 	Config.get('server').get('port')
 const serverUri = ''
 const userUri = serverUri + '/api/user'
 

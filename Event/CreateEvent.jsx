@@ -2,17 +2,17 @@ import React, { Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Moment from 'moment'
 import { Map, fromJS } from 'immutable'
-import Dialog from 'material-ui/lib/dialog'
-import FlatButton from 'material-ui/lib/flat-button'
-import RaisedButton from 'material-ui/lib/raised-button'
-import FloatingActionButton from 'material-ui/lib/floating-action-button'
-import ContentAdd from 'material-ui/lib/svg-icons/content/add'
-import TextField from 'material-ui/lib/text-field'
-import DatePicker from 'material-ui/lib/date-picker/date-picker'
-import TimePicker from 'material-ui/lib/time-picker/time-picker'
-import AutoComplete from 'material-ui/lib/auto-complete'
-import Divider from 'material-ui/lib/divider'
-import * as Colors from 'material-ui/lib/styles/colors'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+import TextField from 'material-ui/TextField'
+import DatePicker from 'material-ui/DatePicker/DatePicker'
+import TimePicker from 'material-ui/TimePicker/TimePicker'
+import AutoComplete from 'material-ui/AutoComplete'
+import Divider from 'material-ui/Divider'
+import * as Colors from 'material-ui/styles/colors'
 
 const style = {
 	position: 'absolute'
@@ -51,8 +51,8 @@ export default class CreateEvent extends Component {
 			,endTimeError: null
 			,descriptionError: null
 			,locationError: null
-    }
-  }
+    
+  }}
 
   componentWillReceiveProps(newProps) {
 	  if (newProps.owner !== this.state.owner) {

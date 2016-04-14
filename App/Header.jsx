@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import AppBar from 'material-ui/lib/app-bar'
-import LeftNav from 'material-ui/lib/left-nav'
-import MenuItem from 'material-ui/lib/menus/menu-item'
-import IconButton from 'material-ui/lib/icon-button'
-import Menu from 'material-ui/lib/svg-icons/navigation/menu'
-import Card from 'material-ui/lib/card/card'
-import CardMedia from 'material-ui/lib/card/card-media'
-import CardTitle from 'material-ui/lib/card/card-title'
-import MapIcon from 'material-ui/lib/svg-icons/maps/map'
-import EventIcon from 'material-ui/lib/svg-icons/action/event'
-import Avatar from 'material-ui/lib/avatar'
+import AppBar from 'material-ui/AppBar'
+import Drawer from 'material-ui/Drawer'
+import MenuItem from 'material-ui/MenuItem'
+import IconButton from 'material-ui/IconButton'
+import Menu from 'material-ui/svg-icons/navigation/menu'
+import Card from 'material-ui/Card/Card'
+import CardMedia from 'material-ui/Card/CardMedia'
+import CardTitle from 'material-ui/Card/CardTitle'
+import MapIcon from 'material-ui/svg-icons/maps/map'
+import EventIcon from 'material-ui/svg-icons/action/event'
+import Avatar from 'material-ui/Avatar'
 
 export default class Header extends Component {
 	constructor(props) {
@@ -55,7 +55,7 @@ export default class Header extends Component {
 						<Menu />
 					</IconButton>}
 				/>
-	      <LeftNav 
+	      <Drawer 
           docked={false}
           open={this.state.open}
           onRequestChange={::this.handleToggle}
@@ -81,7 +81,7 @@ export default class Header extends Component {
 			      >Events</MenuItem>
 			      {/*<MenuItem leftIcon={<MapIcon/>}>Map</MenuItem>*/}
 			     </div>
-	      </LeftNav>
+	      </Drawer>
 	    </div>
 		)
 	}

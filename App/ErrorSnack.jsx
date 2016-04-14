@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import Snackbar from 'material-ui/lib/snackbar'
+import Snackbar from 'material-ui/Snackbar'
 
 export default class ErrorSnack extends Component {
   constructor(props) {
