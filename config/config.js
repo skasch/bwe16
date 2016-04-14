@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-const isProduction = process.env.NOVE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 const defaultConfig = fromJS(require('./default.json'))
 const prodConfig = fromJS(require('./production.json'))
