@@ -5,7 +5,7 @@ import config from '../config/config'
 
 function connect() {
 	return r
-		.connect(config.get('db'))
+		.connect(config.get('db').toJSON())
 }
 
 const db = config.get('db').get('db')
@@ -51,7 +51,6 @@ export function localAuthCallback(email, password, done) {
 }
 
 export function post(user, fields = {}) {
-	console.log(user)
 	const serverUser = fromJS({
 		serverdate: new Date()
 		,name: xss(user.get('name')) || {}

@@ -3,8 +3,7 @@ import Config from '../config/config'
 
 import * as actionCreators from './event_action_creators'
 
-const serverUri = 'http://' + Config.get('server').get('host') + ':' +
-	Config.get('server').get('port')
+const serverUri = ''
 const eventUri = serverUri + '/api/event'
 
 export function getEvent() {

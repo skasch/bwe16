@@ -29,7 +29,6 @@ const facebook = new FacebookStrategy({
 		}
 	}))
 		.then(user => {
-			console.log(user)
 			if (user.get('err'))
 				done(null, fromJS(user), { message: user.get('err')})
 			else 

@@ -13,8 +13,9 @@ const ENTRIES = List.of(
 )
 
 function connect() {
+	console.log(config.get('db').toJSON())
 	return r
-		.connect(config.get('db'))
+		.connect(config.get('db').toJSON())
 }
 
 export function get() {
