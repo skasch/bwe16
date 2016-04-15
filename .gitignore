@@ -1,5 +1,6 @@
 node_modules/
 rethinkdb_data/
 bundle.js
+bundle.js.gz
 keys.js
 npm-debug.log

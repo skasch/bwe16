@@ -1,4 +1,4 @@
-import {Map, fromJS, List} from 'immutable'
+import { Map, fromJS, List } from 'immutable'
 import r from 'rethinkdb'
 import xss from 'xss'
 import config from '../config/config'

@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router'
+import Provider from 'react-redux/lib/components/Provider'
+import Router from 'react-router/lib/Router'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 injectTapEventPlugin()

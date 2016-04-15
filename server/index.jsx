@@ -1,6 +1,6 @@
 import React from 'react'
 import { Map } from 'immutable'
-import { match } from 'react-router'
+import match from 'react-router/lib/match'
 import makeStore from '../flux/store'
 import routes from '../App/routes'
 import { getEvent } from '../event/event'

@@ -57,7 +57,7 @@ export function post(user, fields = {}) {
 		,email: xss(user.get('email'))
 		,password: xss(user.get('password'))
 		,groupId: ''
-		,facebookId: xss(user.get('auth').get('id'))
+		,facebookId: xss(user.getIn(['auth', 'id']))
 	}).merge(fromJS(fields))
 	return connect()
 		.then(conn => r

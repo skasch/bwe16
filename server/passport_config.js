@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
-import { Strategy } from 'passport-local'
-import { Strategy as FacebookStrategy } from 'passport-facebook'
+import Strategy from 'passport-local/lib/strategy'
+import FacebookStrategy from 'passport-facebook/lib/strategy'
 import {
 	intoSession
 	,outOfSession

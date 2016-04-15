@@ -1,7 +1,7 @@
 import React from 'react'
 import { fromJS } from 'immutable'
 import ReactDom from 'react-dom'
-import { hashHistory } from 'react-router'
+import { hashHistory } from 'react-router/lib/index'
 import makeStore from '../flux/store'
 import Root from '../App/Root'
 import { clientRoutes } from '../App/routes'

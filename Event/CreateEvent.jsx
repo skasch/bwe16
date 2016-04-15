@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Moment from 'moment'
 import { Map, fromJS } from 'immutable'
@@ -15,9 +16,10 @@ import Divider from 'material-ui/Divider'
 import * as Colors from 'material-ui/styles/colors'
 
 const style = {
-	position: 'absolute'
+	position: 'fixed'
   ,right: 16
   ,bottom: 16
+  ,zIndex: 100
 }
 
 const dialogStyle = {
@@ -200,14 +202,20 @@ export default class CreateEvent extends Component {
 		    	/>
 		    )}
         <Dialog
-          title={((this.props.create) ?
-          	"Create a new" :
-          	"Edit your") + " awesome event!"}
+          title={
+          	(
+          		(this.props.create) ? 
+          		"Create a new" : 
+          		"Edit " + ((this.props.isOwner) ?  "your" : "this")
+          	) + 
+          	" awesome event!"
+          }
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={::this.handleCancel}
           contentStyle={dialogStyle}
+          autoScrollBodyContent={true}
         >
         	<TextField
         		hintText='Event title'
@@ -215,6 +223,7 @@ export default class CreateEvent extends Component {
         		errorText={this.state.nameError}
         		fullWidth={true}
         		onChange={::this.handleNameChange}
+        		disabled={!this.props.isOwner}
         	/>
       		<AutoComplete 
       			hintText="Location"
@@ -278,6 +287,7 @@ export default class CreateEvent extends Component {
         		multiLine={true}
         				onChange={::this.handleDescriptionChange}
     				value={this.state.description}
+    				disabled={!this.props.isOwner}
         	/>
         </Dialog>
       </div>
