@@ -1,4 +1,9 @@
 var Webpack = require('webpack')
+var CompressionPlugin = require('compression-webpack-plugin')
+
+function gzipMaxCompression(buffer, done) {
+	return zlib.gzip(buffer, { level: 9 }, done)
+}
 
 module.exports = {
 	entry: [
@@ -40,6 +45,13 @@ module.exports = {
 	      'NODE_ENV': JSON.stringify('production')
 	    }
 	    ,"global.GENTLY": false
+	  })
+	  ,new Webpack.optimize.UglifyJsPlugin({
+	  	comments: false
+	  })
+	  ,new CompressionPlugin({
+	  	algorithm: 'gzip',
+	  	test: /\.js$/
 	  })
 	]
 	,debug: true
