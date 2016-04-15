@@ -8,7 +8,7 @@ const INDEXES = config.get('db').get('indexes')
 
 export default function setup() {
 	return r
-		.connect(config.get('db'))
+		.connect(config.get('db').toJSON())
 		.then(conn => {
 			console.log('Database setup')
 			return r
@@ -68,3 +68,5 @@ export default function setup() {
 				})
 		})
 }
+
+setup()
