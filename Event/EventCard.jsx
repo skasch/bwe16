@@ -77,15 +77,19 @@ export default class EventCard extends Component {
     ];
     return (
       <Card style={{margin:"8"}}>
-        <Dialog
-          title="Confirm event suppression"
-          actions={actions}
-          modal={false}
-          open={this.state.deleteDialogOpen}
-          onRequestClose={::this.handleCancelDeleteDialog}
-        >
-          Do you really want to delete this event?
-        </Dialog>
+        {
+          (this.props.isOwner) ?
+          <Dialog
+            title="Confirm event suppression"
+            actions={actions}
+            modal={false}
+            open={this.state.deleteDialogOpen}
+            onRequestClose={::this.handleCancelDeleteDialog}
+          >
+            Do you really want to delete this event?
+          </Dialog> :
+          null
+        }
         <CardHeader
           title={this.props.event.get('name')}
           subtitle={this.props.event.get('location')}
@@ -111,7 +115,8 @@ export default class EventCard extends Component {
         </CardText>
         <CardActions expandable={true}>
           <div className='container-fluid'>
-          {(this.props.isAuth) ?
+          {
+            (this.props.isOwner) ?
             <div className='col-xs-6 col-sm-3'>
               <RaisedButton 
                 label="Delete"
@@ -122,7 +127,13 @@ export default class EventCard extends Component {
             null
           }
           {(this.props.isAuth) ?
-            <div className='col-xs-6 col-sm-3 col-sm-offset-6'>
+            <div 
+              className={
+                (this.props.isOwner) ?
+                'col-xs-6 col-sm-3 col-sm-offset-6' :
+                'col-xs-6 col-xs-offset-6 col-sm-3 col-sm-offset-9'
+              }
+            >
               <CreateEvent 
                 eventId={this.props.eventId} 
                 create={false}
@@ -133,6 +144,7 @@ export default class EventCard extends Component {
                 endTime={::this.getEventDate('endTime')}
                 description={this.props.event.get('description')}
                 location={this.props.event.get('location')}
+                isOwner={this.props.isOwner}
               />
             </div> :
             null

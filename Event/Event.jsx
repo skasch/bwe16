@@ -47,6 +47,10 @@ export class Event extends Component {
   	return this.props.eventList.keySeq().map(key => {
   		return this.props.eventList.get(key).set('id', key)
   	})
+  		.sort((e1, e2) => {
+  			return Moment(new Date(e1.get('startTime')))
+  				.diff(Moment(new Date(e2.get('startTime'))))
+  		})
   }
 
   eventContainText(text) {
@@ -149,13 +153,15 @@ export class Event extends Component {
 	    	<Divider />
 				<div className="container">
 					{::this.validKeys().map(key => {
+						const event = this.props.eventList.get(key)
 						return <EventCard 
 							key={key}
 							eventId={key}
-							event={this.props.eventList.get(key)}
+							event={event}
 							updateEvent={this.props.updateEvent} 
 							removeEvent={this.props.removeEvent}
 							isAuth={this.props.isAuth}
+							isOwner={this.props.userId === event.get('owner')}
 						/>
 					})}
 				</div>

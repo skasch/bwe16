@@ -62,6 +62,7 @@ export function registerUser(user) {
 				} else {
 					dispatch(actionCreators.registerUserSuccess(res.body))
 					dispatch(routerActions.push('/'))
+					location.reload()
 				}
 			})
 	}
