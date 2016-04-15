@@ -1,4 +1,4 @@
-import { routerActions } from 'react-router-redux'
+import { routerActions } from 'react-router-redux/lib/actions'
 import Request from 'superagent'
 import Config from '../config/config'
 
@@ -62,6 +62,7 @@ export function registerUser(user) {
 				} else {
 					dispatch(actionCreators.registerUserSuccess(res.body))
 					dispatch(routerActions.push('/'))
+					location.reload()
 					location.reload()
 				}
 			})

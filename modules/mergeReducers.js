@@ -1,4 +1,4 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 export default function(reducers) {
 	const validKeys = Object.keys(reducers)

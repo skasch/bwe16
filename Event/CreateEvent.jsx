@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Moment from 'moment'
 import { Map, fromJS } from 'immutable'

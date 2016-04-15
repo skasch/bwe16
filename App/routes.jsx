@@ -1,5 +1,6 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router'
+import Route from 'react-router/lib/Route'
+import Redirect from 'react-router/lib/Redirect'
 import EventContainer from '../Event/Event'
 import LoginContainer from '../Login/Login'
 import AccountContainer from '../Account/Account'
