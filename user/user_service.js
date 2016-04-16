@@ -21,12 +21,15 @@ export function outOfSession(userId, done) {
 			.table('user')
 			.get(userId)
 			.run(conn)
-			.then(user => done(null, Map().
+			.then(user => {
+				console.log(user)
+				return done(null, Map().
 						set(fromJS(user).get('id'), 
 							fromJS(user)
 								.remove('id')
 								.remove('password')
-								.remove('serverdate')))))
+								.remove('serverdate')))
+			}))
 }
 
 export function localAuthCallback(email, password, done) {
@@ -87,7 +90,7 @@ export function post(user, fields = {}) {
 							}
 						})
 				} else {
-					return getByFacebookId(user.get('auth').get('id'))
+					return getByFacebookId(user.getIn(['auth','id']))
 				}
 			}))
 }
