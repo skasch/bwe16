@@ -223,7 +223,7 @@ export default class CreateEvent extends Component {
         		errorText={this.state.nameError}
         		fullWidth={true}
         		onChange={::this.handleNameChange}
-        		disabled={!this.props.isOwner}
+        		disabled={!this.props.isOwner && !this.props.create}
         	/>
       		<AutoComplete 
       			hintText="Location"
@@ -287,7 +287,7 @@ export default class CreateEvent extends Component {
         		multiLine={true}
         				onChange={::this.handleDescriptionChange}
     				value={this.state.description}
-    				disabled={!this.props.isOwner}
+    				disabled={!this.props.isOwner && !this.props.create}
         	/>
         </Dialog>
       </div>
