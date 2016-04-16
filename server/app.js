@@ -5,6 +5,7 @@ import ExpressSession from 'express-session'
 import Passport from 'passport'
 import Path from 'path'
 import Webpack from 'webpack'
+import Favicon from 'serve-favicon'
 import WebpackDevMiddleware from 'webpack-dev-middleware'
 import WebpackHotMiddleware from 'webpack-hot-middleware'
 
@@ -16,6 +17,8 @@ import authMiddleware from './auth_middleware'
 import initialRender from './index.jsx'
 
 const app = Express()
+
+app.use(Favicon(Path.resolve(__dirname + '/../dist/favicon.ico')))
 
 app.use(BodyParser.urlencoded({ extended: false }))
 app.use(BodyParser.json())

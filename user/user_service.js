@@ -22,7 +22,6 @@ export function outOfSession(userId, done) {
 			.get(userId)
 			.run(conn)
 			.then(user => {
-				console.log(user)
 				return done(null, Map().
 						set(fromJS(user).get('id'), 
 							fromJS(user)
@@ -62,12 +61,31 @@ export function post(user, fields = {}) {
 		,groupId: ''
 		,facebookId: xss(user.getIn(['auth', 'id']))
 	}).merge(fromJS(fields))
-	console.log(serverUser)
-	return connect()
-		.then(conn => r
+	if (serverUser.get('facebookId')) {
+		return connect()
+			.then(conn => r
+				.db(db)
+				.table('user')
+				.getAll(serverUser.get('facebookId'), { index: 'facebookId' })
+				.run(conn)
+				.then(cursor => cursor.toArray())
+				.then(users => {
+					if (users.length === 0) {
+						return r
+							.db(db)
+							.table('user')
+							.insert(serverUser.toJSON())
+							.run(conn)
+							.then(res => Map().set(res.generated_keys[0], serverUser))
+					} else {
+						return getByFacebookId(user.getIn(['auth','id']))
+					}
+				}))
+	} else {
+		return r
 			.db(db)
 			.table('user')
-			.getAll(serverUser.get('facebookId'), { index: 'facebookId' })
+			.getAll(serverUser.get('email'), { index: 'email' })
 			.run(conn)
 			.then(cursor => cursor.toArray())
 			.then(users => {
@@ -75,25 +93,14 @@ export function post(user, fields = {}) {
 					return r
 						.db(db)
 						.table('user')
-						.getAll(serverUser.get('email'), { index: 'email' })
+						.insert(serverUser.toJSON())
 						.run(conn)
-						.then(cursor => cursor.toArray())
-						.then(users => {
-							if (users.length === 0) {
-								return r
-									.db(db)
-									.table('user')
-									.insert(serverUser.toJSON())
-									.run(conn)
-									.then(res => Map().set(res.generated_keys[0], serverUser))
-							} else {
-								return Map().set('err', 'Email already in use')
-							}
-						})
+						.then(res => Map().set(res.generated_keys[0], serverUser))
 				} else {
-					return getByFacebookId(user.getIn(['auth','id']))
+					return Map().set('err', 'Email already in use')
 				}
-			}))
+			})
+	}
 }
 
 export function update(userId, user) {

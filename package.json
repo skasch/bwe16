@@ -67,6 +67,7 @@
     "redux": "^3.3.1",
     "redux-thunk": "^2.0.1",
     "rethinkdb": "^2.3.0",
+    "serve-favicon": "^2.3.0",
     "url-loader": "^0.5.7",
     "xss": "^0.2.10"
   }
