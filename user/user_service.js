@@ -62,6 +62,7 @@ export function post(user, fields = {}) {
 		,groupId: ''
 		,facebookId: xss(user.getIn(['auth', 'id']))
 	}).merge(fromJS(fields))
+	console.log(serverUser)
 	return connect()
 		.then(conn => r
 			.db(db)
