@@ -108,7 +108,7 @@ class Login extends Component {
 	render() {
 		return (
 			<div className="container">
-				<Card style={{margin:"8"}}>
+				<Card style={{margin:"8px"}}>
 	        <CardHeader
 	          title={ (this.state.register) ? 'Register' : "Login" }
 	          subtitle={ 

@@ -6,6 +6,8 @@ import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
 import Menu from 'material-ui/svg-icons/navigation/menu'
+import ExpandLess from 'material-ui/svg-icons/navigation/expand-less'
+import ExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import Card from 'material-ui/Card/Card'
 import CardTitle from 'material-ui/Card/CardTitle'
 import CardMedia from 'material-ui/Card/CardMedia'
@@ -20,6 +22,7 @@ export default class Header extends Component {
     	.shouldComponentUpdate.bind(this)
 		this.state = { 
 			open: false 
+			,searchExpanded: true
 		}
 	}
 
@@ -51,10 +54,17 @@ export default class Header extends Component {
 			<div className='header-container'>
 				<AppBar
 					title='Burning Weekend 2016'
-					iconClassNameRight="muidocs-icon-navigation-expand-more"
 					iconElementLeft={<IconButton onClick={::this.handleOpen}>
 						<Menu />
 					</IconButton>}
+					iconElementRight={
+						<IconButton>
+							{(this.state.searchExpanded) ?
+								<ExpandLess /> :
+								<ExpandMore />
+							}
+						</IconButton>
+					}
 				/>
 	      <Drawer 
           docked={false}

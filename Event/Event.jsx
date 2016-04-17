@@ -16,8 +16,17 @@ import CreateEvent from './CreateEvent'
 import EventCard from './EventCard'
 import * as eventActions from '../event/event'
 
-const minDate = new Date('2016-05-13')
-const maxDate = new Date('2016-05-15')
+export const categories = fromJS([
+	{ 
+		name: 'Workshop', color: Colors.amber700, bgColor: Colors.amber400 }
+	,{ name: 'Art', color: Colors.green700, bgColor: Colors.green400 }
+	,{ name: 'Meal', color: Colors.pink700, bgColor: Colors.pink400 }
+	,{ name: 'Music', color: Colors.cyan700, bgColor: Colors.cyan400 }
+	,{ name: 'Other', color: Colors.blueGrey700, bgColor: Colors.blueGrey400 }
+])
+
+export const minDate = new Date('2016-05-13')
+export const maxDate = new Date('2016-05-15')
 
 export class Event extends Component {
   constructor(props) {

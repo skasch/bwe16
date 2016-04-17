@@ -1,7 +1,7 @@
 import React from 'react'
 import Component from 'react/lib/ReactComponent'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import connect from 'react-redux/components/connect'
+import connect from 'react-redux/lib/components/connect'
 import { routerActions } from 'react-router-redux/lib/actions'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'

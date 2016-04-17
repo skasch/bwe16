@@ -9,6 +9,7 @@ import * as Colors from 'material-ui/styles/colors'
 
 import Header from './Header'
 import ErrorSnack from './ErrorSnack'
+import * as Colors from 'material-ui/styles/colors'
 
 const bweTheme = getMuiTheme({
   palette: {
@@ -32,7 +33,9 @@ class App extends Component {
 	render() {
 		return (
       <MuiThemeProvider muiTheme={bweTheme}>
-				<div className='app-container'>
+				<div
+					className='app-container'
+				>
 					<ErrorSnack 
 						open={this.props.error !== ''}
 						message={this.props.error} 

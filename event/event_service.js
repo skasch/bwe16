@@ -10,6 +10,7 @@ const ENTRIES = List.of(
 	,'owner'
 	,'description'
 	,'location'
+	,'category'
 )
 
 function connect() {

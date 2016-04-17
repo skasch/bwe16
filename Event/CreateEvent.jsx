@@ -9,13 +9,17 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import TextField from 'material-ui/TextField'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker/DatePicker'
 import TimePicker from 'material-ui/TimePicker/TimePicker'
 import AutoComplete from 'material-ui/AutoComplete'
 import Divider from 'material-ui/Divider'
 import * as Colors from 'material-ui/styles/colors'
 
-const style = {
+import { categories, minDate, maxDate } from './Event'
+
+const createStyle = {
 	position: 'fixed'
   ,right: 16
   ,bottom: 16
@@ -27,9 +31,6 @@ const dialogStyle = {
   ,minWidth: '320px'
   ,maxWidth: '1080px'
 }
-
-const minDate = new Date('2016-05-13')
-const maxDate = new Date('2016-05-15')
 
 export default class CreateEvent extends Component {
   constructor(props) {
@@ -46,6 +47,7 @@ export default class CreateEvent extends Component {
 			,endTime: this.props.endTime
 			,description: this.props.description
 			,location: this.props.location
+			,category: this.props.category
 			,nameError: null
 			,startDayError: null
 			,startTimeError: null
@@ -53,6 +55,7 @@ export default class CreateEvent extends Component {
 			,endTimeError: null
 			,descriptionError: null
 			,locationError: null
+			,categoryError: null
     
   }}
 
@@ -63,7 +66,7 @@ export default class CreateEvent extends Component {
 	}
 	
 	handleOpen() {
-    this.setState({open: true})
+    this.setState({ open: true })
   }
 
   handleOk() {
@@ -75,6 +78,7 @@ export default class CreateEvent extends Component {
   		,endTime: 'ending time'
   		,description: 'description'
   		,location: 'location'
+  		,category: 'category'
   	})
   	const valid = fields.keySeq().reduce((valid, field) => {
 	  	if (!this.state[field] || this.state[field] === '') {
@@ -102,6 +106,7 @@ export default class CreateEvent extends Component {
   			,owner: this.state.owner
   			,description: this.state.description
   			,location: this.state.location
+  			,category: this.state.category.get('name')
   		})
   		if (event.get('endTime') > event.get('startTime')) {
   			(this.props.create) ?
@@ -133,6 +138,13 @@ export default class CreateEvent extends Component {
     	locationError: null
     	,location: text
     })
+  }
+
+  handleCategoryChange(event, index, value) {
+  	this.setState({
+  		categoryError: null
+  		,category: value
+  	})
   }
 
   handleStartDayChange(event, time) {
@@ -188,7 +200,7 @@ export default class CreateEvent extends Component {
       <div>
 				{(this.props.create) ? (
 					<FloatingActionButton 
-						style={style} 
+						style={createStyle} 
 						backgroundColor={Colors.deepOrange700}
 						onTouchTap={::this.handleOpen}
 					>
@@ -198,6 +210,7 @@ export default class CreateEvent extends Component {
 		    	<RaisedButton 
 		    		label="Edit" 
 		    		fullWidth={true}
+		    		primary={true}
 						onTouchTap={::this.handleOpen}
 		    	/>
 		    )}
@@ -210,6 +223,9 @@ export default class CreateEvent extends Component {
           	) + 
           	" awesome event!"
           }
+          titleStyle={(this.state.category) ?
+          	{backgroundColor: this.state.category.get('bgColor') || 'white'} :
+          	null}
           actions={actions}
           modal={false}
           open={this.state.open}
@@ -225,61 +241,86 @@ export default class CreateEvent extends Component {
         		onChange={::this.handleNameChange}
         		disabled={!this.props.isOwner && !this.props.create}
         	/>
-      		<AutoComplete 
-      			hintText="Location"
-        		errorText={this.state.locationError}
-		        dataSource={[]}
-        		onUpdateInput={::this.handleLocationChange}
-        		searchText={this.state.location}
-      		/>
-          <div className='container-fluid'>
-          	<div className='col-sm-7 col-xs-12'>
-          		<DatePicker 
-			          minDate={minDate}
-			          maxDate={maxDate}
-			          defaultDate={minDate}
-			          disableYearSelection={true}
-          			hintText="Start day"
-        				errorText={this.state.startDayError} 
-          			fullWidth={true} 
-        				onChange={::this.handleStartDayChange}
-        				value={this.state.startDay}
-          		/>
-          	</div>
-          	<div className='col-sm-5 col-xs-offset-2 col-xs-10'>
-          		<TimePicker 
-          			format='24hr'
-          			hintText="Start time"
-        				errorText={this.state.startTimeError}
-          			fullWidth={true}
-        				onChange={::this.handleStartTimeChange}
-        				value={this.state.startTime}
-          		/>
-          	</div>
-          	<div className='col-sm-7 col-xs-12'>
-          		<DatePicker
-			          minDate={minDate}
-			          maxDate={maxDate}
-			          defaultDate={maxDate}
-			          disableYearSelection={true}
-			          hintText="End day"
-        				errorText={this.state.endDayError}
-			          fullWidth={true}
-        				onChange={::this.handleEndDayChange}
-        				value={this.state.endDay}
-			        />
-          	</div>
-          	<div className='col-sm-5 col-xs-offset-2 col-xs-10'>
-          		<TimePicker 
-          			format='24hr'
-          			hintText="End time"
-        				errorText={this.state.endTimeError}
-          			fullWidth={true}
-        				onChange={::this.handleEndTimeChange}
-        				value={this.state.endTime}
-          		/>
-          	</div>
-          </div>
+        	<div className='container-fluid'>
+	        	<div className='col-sm-6 col-xs-12'>
+		      		<AutoComplete 
+		      			hintText="Location"
+		        		errorText={this.state.locationError}
+				        dataSource={[]}
+		        		onUpdateInput={::this.handleLocationChange}
+		        		searchText={this.state.location}
+		        		fullWidth={true}
+		      		/>
+		      	</div>
+		      	<div className='col-sm-6 col-xs-12'>
+		      		<SelectField
+		      			floatingLabelText="Category"
+		      			errorText={this.state.categoryError}
+		      			onChange={::this.handleCategoryChange}
+		      			value={this.state.category}
+		      			disabled={!this.props.isOwner && !this.props.create}
+		        		fullWidth={true}
+		        		labelStyle={(this.state.category) ?
+						          	{color: this.state.category.get('color') || 'white'} :
+						          	null}
+		      		>
+		      			{categories.map((category, index) => (
+		      				<MenuItem
+		      					key={index}
+		      					style={{color: category.get('color')}}
+		      					value={category}
+		      					primaryText={category.get('name')}
+		      				/>
+		      			))}
+		      		</SelectField>
+	      		</div>
+      		</div>
+        	<div className='col-sm-7 col-xs-12'>
+        		<DatePicker 
+		          minDate={minDate}
+		          maxDate={maxDate}
+		          defaultDate={minDate}
+		          disableYearSelection={true}
+        			hintText="Start day"
+      				errorText={this.state.startDayError} 
+        			fullWidth={true} 
+      				onChange={::this.handleStartDayChange}
+      				value={this.state.startDay}
+        		/>
+        	</div>
+        	<div className='col-sm-5 col-xs-offset-2 col-xs-10'>
+        		<TimePicker 
+        			format='24hr'
+        			hintText="Start time"
+      				errorText={this.state.startTimeError}
+        			fullWidth={true}
+      				onChange={::this.handleStartTimeChange}
+      				value={this.state.startTime}
+        		/>
+        	</div>
+        	<div className='col-sm-7 col-xs-12'>
+        		<DatePicker
+		          minDate={minDate}
+		          maxDate={maxDate}
+		          defaultDate={maxDate}
+		          disableYearSelection={true}
+		          hintText="End day"
+      				errorText={this.state.endDayError}
+		          fullWidth={true}
+      				onChange={::this.handleEndDayChange}
+      				value={this.state.endDay}
+		        />
+        	</div>
+        	<div className='col-sm-5 col-xs-offset-2 col-xs-10'>
+        		<TimePicker 
+        			format='24hr'
+        			hintText="End time"
+      				errorText={this.state.endTimeError}
+        			fullWidth={true}
+      				onChange={::this.handleEndTimeChange}
+      				value={this.state.endTime}
+        		/>
+        	</div>
         	<TextField
         		hintText='Description'
         		errorText={this.state.descriptionError}

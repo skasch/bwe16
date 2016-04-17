@@ -39,6 +39,7 @@ function renderTemplate(initialState) {
 			<style>
 				body {
 					margin: 0;
+					background-color: #eee;
 				}
 			</style>
 			<title>Burning weekend 2016</title>

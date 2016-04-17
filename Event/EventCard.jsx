@@ -13,6 +13,7 @@ import Avatar from 'material-ui/Avatar'
 import * as Colors from 'material-ui/styles/colors'
 
 import CreateEvent from './CreateEvent'
+import { categories } from './Event'
 
 export default class EventCard extends Component {
   constructor(props) {
@@ -77,7 +78,11 @@ export default class EventCard extends Component {
       />,
     ];
     return (
-      <Card style={{margin:"8"}}>
+      <Card 
+        style={{
+          margin:"8px"
+        }}
+      >
         {
           (this.props.isOwner) ?
           <Dialog
@@ -96,6 +101,16 @@ export default class EventCard extends Component {
           subtitle={this.props.event.get('location')}
           actAsExpander={true}
           showExpandableButton={true}
+          style={{
+            backgroundColor: ((this.props.event.get('category')) ? 
+              categories
+                .filter(category => {
+                  return category.get('name') == this.props.event.get('category')
+                })
+                .first()
+                .get('bgColor') :
+              'white')
+          }}
           avatar={
             <Avatar
               backgroundColor={::this.avatarColor()}
@@ -122,6 +137,7 @@ export default class EventCard extends Component {
               <RaisedButton 
                 label="Delete"
                 fullWidth={true}
+                secondary={true}
                 onTouchTap={::this.handleOpenDeleteDialog}
               />
             </div> :
