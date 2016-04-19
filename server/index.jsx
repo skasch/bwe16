@@ -42,7 +42,7 @@ function renderTemplate(initialState) {
 					background-color: #eee;
 				}
 			</style>
-			<title>Burning weekend 2016</title>
+			<title>Crême Brulée 2016</title>
     </head>
     <body>
       <div id="app"></div>

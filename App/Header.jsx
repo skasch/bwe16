@@ -53,7 +53,7 @@ export default class Header extends Component {
 		return (
 			<div className='header-container'>
 				<AppBar
-					title='Burning Weekend 2016'
+					title='Crême Brulée 2016'
 					iconElementLeft={<IconButton onClick={::this.handleOpen}>
 						<Menu />
 					</IconButton>}
