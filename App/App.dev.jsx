@@ -10,17 +10,20 @@ import DevTools from './DevTools'
 
 import Header from './Header'
 import ErrorSnack from './ErrorSnack'
+import * as EventActions from '../Event/Event_action_creators'
+
+export const bwePalette = {
+  primary1Color: Colors.deepOrange700
+  ,primary2Color: Colors.deepOrange800
+  ,primary3Color: Colors.lightBlack
+  ,accent1Color: Colors.indigo500
+  ,accent2Color: Colors.indigo700
+  ,accent3Color: Colors.grey500
+  ,pickerHeaderColor: Colors.deepOrange700
+}
 
 const bweTheme = getMuiTheme({
-  palette: {
-    primary1Color: Colors.deepOrange700
-    ,primary2Color: Colors.deepOrange800
-    ,primary3Color: Colors.lightBlack
-    ,accent1Color: Colors.indigo500
-    ,accent2Color: Colors.indigo700
-    ,accent3Color: Colors.grey500
-    ,pickerHeaderColor: Colors.deepOrange700
-  }
+  palette: bwePalette
 })
 
 class App extends Component {
@@ -44,6 +47,7 @@ class App extends Component {
 						account={this.props.account}
 						event={this.props.event}
 						userName={this.props.userName}
+						toggleSearch={this.props.toggleSearch}
 					/>
 					{this.props.children}
       		<DevTools />
@@ -71,6 +75,7 @@ const mapDispatchToProps = (dispatch) => {
 		login: () => dispatch(routerActions.push('/login'))
 		,account: () => dispatch(routerActions.push('/account'))
 		,event: () => dispatch(routerActions.push('/'))
+		,toggleSearch: () => dispatch(EventActions.toggleSearch())
 	}
 }
 

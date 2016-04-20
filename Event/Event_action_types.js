@@ -1,0 +1,1 @@
+export const TOGGLE_SEARCH = 'bwe16/Event/TOGGLE_SEARCH'

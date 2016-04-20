@@ -39,7 +39,7 @@ function renderTemplate(initialState) {
 			<style>
 				body {
 					margin: 0;
-					background-color: #eee;
+					background-color: #fbe9e7;
 				}
 			</style>
 			<title>Crême Brulée 2016</title>

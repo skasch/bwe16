@@ -1,6 +1,7 @@
 import React from 'react'
 import Component from 'react/lib/ReactComponent'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import connect from 'react-redux/lib/components/connect'
 import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
@@ -15,14 +16,13 @@ import MapIcon from 'material-ui/svg-icons/maps/map'
 import EventIcon from 'material-ui/svg-icons/action/event'
 import Avatar from 'material-ui/Avatar'
 
-export default class Header extends Component {
+class Header extends Component {
 	constructor(props) {
 		super(props)
     this.shouldComponentUpdate = PureRenderMixin
     	.shouldComponentUpdate.bind(this)
 		this.state = { 
 			open: false 
-			,searchExpanded: true
 		}
 	}
 
@@ -53,13 +53,18 @@ export default class Header extends Component {
 		return (
 			<div className='header-container'>
 				<AppBar
-					title='Crême Brulée 2016'
+					title={
+						<span style={{ cursor: 'pointer' }}>
+							{'Crême Brulée 2016'}
+						</span>
+					}
+    			onTitleTouchTap={::this.openEvent}
 					iconElementLeft={<IconButton onClick={::this.handleOpen}>
 						<Menu />
 					</IconButton>}
 					iconElementRight={
-						<IconButton>
-							{(this.state.searchExpanded) ?
+						<IconButton onClick={this.props.toggleSearch}>
+							{(this.props.searchOpen) ?
 								<ExpandLess /> :
 								<ExpandMore />
 							}
@@ -79,11 +84,15 @@ export default class Header extends Component {
 					  </Card>
 					  {(this.props.isAuth) ? 
 					  	<MenuItem 
-						  	leftIcon={<Avatar src={require('../img/avatar_french_burners.jpg')} />}
+						  	leftIcon={
+						  		<Avatar src={require('../img/avatar_french_burners.jpg')} />
+						  	}
 						  	onTouchTap={::this.openAccount}
 						  >{this.props.userName}</MenuItem> :
 						  <MenuItem 
-						  	leftIcon={<Avatar src={require('../img/avatar_french_burners.jpg')} />}
+						  	leftIcon={
+						  		<Avatar src={require('../img/avatar_french_burners.jpg')} />
+						  	}
 						  	onTouchTap={::this.openLogin}
 						  >Login</MenuItem>}
 			      <MenuItem 
@@ -97,3 +106,13 @@ export default class Header extends Component {
 		)
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		searchOpen: state.getIn(['Event', 'searchOpen'])
+	}
+}
+
+export default connect(
+	mapStateToProps
+)(Header)

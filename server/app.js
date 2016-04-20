@@ -38,7 +38,13 @@ if (!isProduction) {
 
 	app.use(wpMiddleware)
 	app.use(WebpackHotMiddleware(compiler))
-} 
+} else {
+	app.get('/bundle.js', function (req, res, next) {
+		req.url = req.url + '.gz'
+	  res.set('Content-Encoding', 'gzip')
+	  next()
+	})
+}
 
 app.use(ExpressSession({
 	secret: 'PUT_IN_ENV'

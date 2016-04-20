@@ -134,7 +134,16 @@ export class Event extends Component {
 						create={true}
 					/> :
 					null}
-	    	<Paper zDepth={1} className='event-filtering'>
+	    	<Paper
+	    		style={{ 
+	    			overflowY: 'auto'
+	    			,maxHeight: (this.props.searchOpen) ?
+		    			'1440px' :
+		    			'0px'
+	    		}}
+	    		zDepth={1} 
+	    		className='event-filtering'
+	    	>
 	    		<div className="container">
 			      <div className='col-sm-6 col-xs-12'>
 				      <AutoComplete
@@ -185,6 +194,7 @@ function mapStateToProps(state) {
 		eventList: state.getIn(['event', 'data'])
 		,isAuth: state.getIn(['user', 'isAuthenticated'])
 		,userId: state.getIn(['user', 'usersById'])
+		,searchOpen: state.getIn(['Event', 'searchOpen'])
 	}
 }
 

@@ -12,6 +12,7 @@ import Dialog from 'material-ui/Dialog'
 import Avatar from 'material-ui/Avatar'
 import * as Colors from 'material-ui/styles/colors'
 
+import CategoryBadge from './CategoryBadge'
 import CreateEvent from './CreateEvent'
 import { categories } from './Event'
 
@@ -58,10 +59,30 @@ export default class EventCard extends Component {
     this.setState({deleteDialogOpen: false})
   }
 
-  avatarColor() {
+  getCategory() {
+    return (this.props.event.get('category')) ?
+      categories
+        .filter(category => {
+          return category.get('name') == this.props.event.get('category')
+        })
+        .first() :
+      null
+  }
+
+  categoryColor() {
     const startTime = ::this.getTime('startTime')
-    return (startTime.format('DD') % 2 === 0) ? Colors.indigo400 : 
-      Colors.deepOrange400
+    return (
+      (::this.getCategory()) ? 
+        ::this.getCategory().get('color') :
+        ((startTime.format('DD') % 2 === 0) ? 
+          Colors.indigo400 : Colors.deepOrange400)
+    )
+  }
+
+  avatarContent() {
+    return (::this.getCategory()) ?
+      ::this.getCategory().get('name')[0].toUpperCase() :
+      'E'
   }
 
   render() {
@@ -97,25 +118,24 @@ export default class EventCard extends Component {
           null
         }
         <CardHeader
-          title={this.props.event.get('name')}
-          subtitle={this.props.event.get('location')}
+          title={(::this.getCategory()) ?
+            <span>
+              {this.props.event.get('name') + ' '}
+              <CategoryBadge
+                text={::this.getCategory().get('name')}
+                bgColor={::this.categoryColor()}
+              />
+            </span> :
+            this.props.event.get('name')
+          }
+          subtitle={::this.getTimeText()}
           actAsExpander={true}
           showExpandableButton={true}
-          style={{
-            backgroundColor: ((this.props.event.get('category')) ? 
-              categories
-                .filter(category => {
-                  return category.get('name') == this.props.event.get('category')
-                })
-                .first()
-                .get('bgColor') :
-              'white')
-          }}
           avatar={
             <Avatar
-              backgroundColor={::this.avatarColor()}
+              backgroundColor={::this.categoryColor()}
             >
-              {::this.getTime('startTime').hour()}
+              {::this.avatarContent()}
             </Avatar>
           }
         />
@@ -125,7 +145,8 @@ export default class EventCard extends Component {
               {this.props.event.get('description')}
             </div>
             <div className='col-xs-5 col-sm-5 text-right'>
-              {::this.getTimeText()}
+              <span style={{ color: Colors.grey500 }}>{"at "}</span>
+              {this.props.event.get('location')}
             </div>
           </div>
         </CardText>
