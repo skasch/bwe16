@@ -20,12 +20,20 @@ const app = Express()
 
 app.use(Favicon(Path.resolve(__dirname + '/../dist/favicon.ico')))
 
+const isProduction = process.env.NODE_ENV === 'production'
+const port = config.get('server').get('port')
+
+if (isProduction) {
+	app.get('/bundle.js', function (req, res, next) {
+		req.url = req.url + '.gz'
+	  res.set('Content-Encoding', 'gzip')
+	  next()
+	})
+}
+
 app.use(BodyParser.urlencoded({ extended: false }))
 app.use(BodyParser.json())
 app.use(Morgan('dev'))
-
-const isProduction = process.env.NOVE_ENV === 'production'
-const port = isProduction ? process.env.PORT : config.get('server').get('port')
 
 if (!isProduction) {
 	const compiler = Webpack(webpackConfig)
@@ -39,11 +47,7 @@ if (!isProduction) {
 	app.use(wpMiddleware)
 	app.use(WebpackHotMiddleware(compiler))
 } else {
-	app.get('/bundle.js', function (req, res, next) {
-		req.url = req.url + '.gz'
-	  res.set('Content-Encoding', 'gzip')
-	  next()
-	})
+	app.use(Express.static('dist'))
 }
 
 app.use(ExpressSession({
@@ -90,9 +94,7 @@ app.get('/auth/facebook/callback', Passport.authenticate('facebook', {
   ,failureRedirect: '/login'
 }))
 
-if (!isProduction) {
-	app.get('*', initialRender)
-} 
+app.get('*', initialRender)
 
 app.use((err, req, res, next) => {
 	console.log('ERROR HANDLER:')
